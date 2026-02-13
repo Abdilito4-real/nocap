@@ -1,0 +1,107 @@
+'use client';
+
+import * as React from 'react';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Icons } from '@/components/Icons';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+
+export function AuthPage() {
+  const [isLogin, setIsLogin] = useState(true);
+
+  return (
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-background">
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-background via-blue-50/20 to-purple-50/20" />
+      <div className="relative z-10 flex flex-col items-center text-center p-4">
+        <div className="flex items-center gap-2 mb-4">
+          <Icons.logo className="h-8 w-8 text-primary" />
+          <h1 className="text-3xl font-bold text-foreground">NoCap</h1>
+        </div>
+        <p className="text-muted-foreground mb-8 max-w-sm">
+          The ultimate student hub. Connect, track, and discover. All in one place.
+        </p>
+
+        <Card className="w-full max-w-sm">
+          <CardHeader>
+            <CardTitle>{isLogin ? 'Welcome Back' : 'Create an Account'}</CardTitle>
+            <CardDescription>
+              {isLogin ? "Enter your credentials to access your account." : "Let's get you started."}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            {!isLogin && (
+              <div className="grid gap-2">
+                <Label htmlFor="name">Name</Label>
+                <Input id="name" placeholder="Alex Doe" />
+              </div>
+            )}
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" placeholder="student@university.edu" />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" />
+            </div>
+          </CardContent>
+          <CardFooter className="flex flex-col gap-4">
+            <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                <Link href="/feed">{isLogin ? 'Log In' : 'Sign Up'}</Link>
+            </Button>
+            <div className="relative w-full">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+              </div>
+            </div>
+            <Button variant="outline" className="w-full">
+              <Icons.google className="mr-2 h-4 w-4" />
+              Google
+            </Button>
+          </CardFooter>
+        </Card>
+        <p className="mt-4 text-sm text-muted-foreground">
+          {isLogin ? "Don't have an account?" : "Already have an account?"}
+          <Button variant="link" className="px-1" onClick={() => setIsLogin(!isLogin)}>
+            {isLogin ? 'Sign Up' : 'Log In'}
+          </Button>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function AuthForm({ isLogin }: { isLogin: boolean }) {
+  // Logic for form submission would go here
+  return (
+    <>
+      <CardContent className="grid gap-4">
+        {!isLogin && (
+          <div className="grid gap-2">
+            <Label htmlFor="name">Name</Label>
+            <Input id="name" placeholder="Alex Doe" />
+          </div>
+        )}
+        <div className="grid gap-2">
+          <Label htmlFor="email">Email</Label>
+          <Input id="email" type="email" placeholder="student@university.edu" />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="password">Password</Label>
+          <Input id="password" type="password" />
+        </div>
+      </CardContent>
+      <CardFooter>
+        <Button asChild className="w-full">
+            <Link href="/feed">{isLogin ? 'Log In' : 'Sign Up'}</Link>
+        </Button>
+      </CardFooter>
+    </>
+  );
+}

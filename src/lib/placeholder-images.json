@@ -1,3 +1,70 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "profile_picture_1",
+      "description": "User profile picture of a smiling woman",
+      "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzA5MzM1ODV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "profile_picture_2",
+      "description": "User profile picture of a man with glasses",
+      "imageUrl": "https://images.unsplash.com/photo-1522556189639-b150ed9c4330?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzA5NjUwNjZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man portrait"
+    },
+    {
+      "id": "profile_picture_3",
+      "description": "User profile picture of a person looking thoughtful",
+      "imageUrl": "https://images.unsplash.com/photo-1629001528534-e8a48b636ded?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzdHVkZW50JTIwdGhpbmtpbmd8ZW58MHx8fHwxNzcwOTkyMDA3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "student thinking"
+    },
+    {
+      "id": "video_thumbnail_1",
+      "description": "Campus life video thumbnail showing students on a lawn",
+      "imageUrl": "https://images.unsplash.com/flagged/photo-1554473675-d0904f3cbf38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx1bml2ZXJzaXR5JTIwY2FtcHVzfGVufDB8fHx8MTc3MDk0MzgwOHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "university campus"
+    },
+    {
+      "id": "video_thumbnail_2",
+      "description": "Video thumbnail of a lecture hall",
+      "imageUrl": "https://images.unsplash.com/photo-1703680968885-22659eb00165?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxsZWN0dXJlJTIwaGFsbHxlbnwwfHx8fDE3NzEwMDE3Njh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "lecture hall"
+    },
+    {
+      "id": "video_thumbnail_3",
+      "description": "Video thumbnail of a library",
+      "imageUrl": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bGlicmFyeSUyMGJvb2tzfGVufDB8fHx8MTc3MDk5ODMyMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "library books"
+    },
+    {
+      "id": "video_thumbnail_4",
+      "description": "Video thumbnail of a graduation ceremony",
+      "imageUrl": "https://images.unsplash.com/photo-1719409015966-cdc7ca290829?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxncmFkdWF0aW9uJTIwc3R1ZGVudHN8ZW58MHx8fHwxNzcxMDI1NDg2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "graduation students"
+    },
+    {
+      "id": "confession_image_1",
+      "description": "Anonymous confession image with an abstract background",
+      "imageUrl": "https://images.unsplash.com/photo-1486551937199-baf066858de7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxhYnN0cmFjdCUyMHRleHR1cmV8ZW58MHx8fHwxNzcwOTEwNTgyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract texture"
+    },
+    {
+      "id": "user_video_thumb_1",
+      "description": "User video thumbnail of a study group",
+      "imageUrl": "https://images.unsplash.com/photo-1652305500057-0fcb348b62aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzdHVkZW50cyUyMHN0dWR5aW5nfGVufDB8fHx8MTc3MTAyNTQ4NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "students studying"
+    },
+    {
+      "id": "user_video_thumb_2",
+      "description": "User video thumbnail of a coffee shop",
+      "imageUrl": "https://images.unsplash.com/photo-1493857671505-72967e2e2760?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjb2ZmZWUlMjBzaG9wfGVufDB8fHx8MTc3MDkzMzEwNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "coffee shop"
+    },
+    {
+      "id": "user_video_thumb_3",
+      "description": "User video thumbnail of a park on campus",
+      "imageUrl": "https://images.unsplash.com/photo-1657840724060-65ea56bce6e6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjYW1wdXMlMjBwYXJrfGVufDB8fHx8MTc3MTAyNTQ4NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "campus park"
+    }
+  ]
 }
