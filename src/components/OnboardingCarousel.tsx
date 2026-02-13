@@ -8,12 +8,12 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  type CarouselApi,
 } from '@/components/ui/carousel';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages, type ImagePlaceholder } from '@/lib/placeholder-images';
+import { cn } from '@/lib/utils';
 
 const getImage = (id: string): ImagePlaceholder | undefined => PlaceHolderImages.find(img => img.id === id);
 
@@ -56,9 +56,32 @@ const features = [
 ];
 
 export function OnboardingCarousel() {
+  const [api, setApi] = React.useState<CarouselApi>();
+  const [current, setCurrent] = React.useState(0);
+  const [count, setCount] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap());
+
+    api.on('select', () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  const handleNext = React.useCallback(() => {
+    api?.scrollNext();
+  }, [api]);
+
+  const isLastSlide = current === count - 1;
+
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen w-full bg-background overflow-hidden">
-        <Carousel className="w-full max-w-sm" opts={{ loop: true }}>
+        <Carousel setApi={setApi} className="w-full max-w-sm">
             <CarouselContent>
             {features.map((feature, index) => (
                 <CarouselItem key={index}>
@@ -83,13 +106,32 @@ export function OnboardingCarousel() {
                 </CarouselItem>
             ))}
             </CarouselContent>
-            <CarouselPrevious className="hidden sm:flex left-[-50px]" />
-            <CarouselNext className="hidden sm:flex right-[-50px]" />
         </Carousel>
-        <div className="absolute bottom-16 z-10 w-full max-w-sm px-4">
-             <Button asChild className="w-full" size="lg">
-                <Link href="/auth">Get Started</Link>
-            </Button>
+
+        <div className="absolute bottom-10 z-10 w-full max-w-sm px-4 flex flex-col items-center gap-6">
+            <div className="flex gap-2">
+                {Array.from({ length: count }).map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => api?.scrollTo(index)}
+                        className={cn(
+                            'h-2 w-2 rounded-full transition-all',
+                            current === index ? 'w-4 bg-primary' : 'bg-muted'
+                        )}
+                        aria-label={`Go to slide ${index + 1}`}
+                    />
+                ))}
+            </div>
+
+            {isLastSlide && count > 0 ? (
+                <Button asChild className="w-full" size="lg">
+                    <Link href="/auth">Get Started</Link>
+                </Button>
+            ) : (
+                <Button onClick={handleNext} className="w-full" size="lg">
+                    Get It
+                </Button>
+            )}
         </div>
     </div>
   );
