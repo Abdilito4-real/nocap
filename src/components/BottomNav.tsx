@@ -2,14 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Briefcase, BookCheck, MessageOff, User } from 'lucide-react';
+import { Home, Briefcase, BookCheck, MessageSquareOff, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/feed', icon: Home, label: 'Feed' },
   { href: '/jobs', icon: Briefcase, label: 'Jobs' },
   { href: '/assignments', icon: BookCheck, label: 'Assignments' },
-  { href: '/confessions', icon: MessageOff, label: 'Confessions' },
+  { href: '/confessions', icon: MessageSquareOff, label: 'Confessions' },
   { href: '/profile', icon: User, label: 'Profile' },
 ];
 

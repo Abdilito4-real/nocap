@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Briefcase, BookCheck, MessageOff, User, Bot } from 'lucide-react';
+import { Home, Briefcase, BookCheck, MessageSquareOff, User, Bot } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Icons } from '@/components/Icons';
 import { Separator } from '@/components/ui/separator';
@@ -11,7 +11,7 @@ const mainNavItems = [
   { href: '/feed', icon: Home, label: 'Feed' },
   { href: '/jobs', icon: Briefcase, label: 'Jobs' },
   { href: '/assignments', icon: BookCheck, label: 'Assignments' },
-  { href: '/confessions', icon: MessageOff, label: 'Confessions' },
+  { href: '/confessions', icon: MessageSquareOff, label: 'Confessions' },
 ];
 
 const secondaryNavItems = [
