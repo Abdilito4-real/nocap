@@ -12,9 +12,9 @@ export const Icons = {
       strokeLinejoin="round"
       {...props}
     >
-      <path d="M12 2L2 7l10 5 10-5-10-5z" />
-      <path d="M2 17l10 5 10-5" />
-      <path d="M2 12l10 5 10-5" />
+      <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.084a1 1 0 0 0 0 1.838l8.57 3.908a2 2 0 0 0 1.66 0z"/>
+      <path d="M22 10v6"/>
+      <path d="M6 12v5c0 1.66 4 3 10 3s10-1.34 10-3v-5"/>
     </svg>
   ),
   google: (props: SVGProps<SVGSVGElement>) => (
