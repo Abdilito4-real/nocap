@@ -81,25 +81,29 @@ export function OnboardingCarousel() {
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen w-full bg-background overflow-hidden">
-        <Carousel setApi={setApi} className="w-full max-w-sm">
+        <Carousel setApi={setApi} className="w-full max-w-sm md:max-w-xl">
             <CarouselContent>
             {features.map((feature, index) => (
                 <CarouselItem key={index}>
                 <div className="p-1">
                     <Card className="border-none shadow-none bg-transparent">
-                    <CardContent className="flex flex-col items-center justify-center p-6 text-center h-[600px]">
+                    <CardContent className="flex flex-col md:flex-row items-center justify-center p-6 md:gap-8 md:text-left text-center h-[600px] md:h-[450px]">
                         {feature.image && (
-                            <Image
-                                src={feature.image.imageUrl}
-                                alt={feature.title}
-                                width={300}
-                                height={400}
-                                className="rounded-lg object-cover w-[300px] h-[400px] mb-6 shadow-lg"
-                                data-ai-hint={feature.image.imageHint}
-                            />
+                            <div className="relative w-[300px] h-[400px] md:w-1/2 md:h-full flex-shrink-0">
+                                <Image
+                                    src={feature.image.imageUrl}
+                                    alt={feature.title}
+                                    layout="fill"
+                                    objectFit="cover"
+                                    className="rounded-lg shadow-lg"
+                                    data-ai-hint={feature.image.imageHint}
+                                />
+                            </div>
                         )}
-                        <h3 className="text-2xl font-bold mb-2">{feature.title}</h3>
-                        <p className="text-muted-foreground">{feature.description}</p>
+                        <div className="md:w-1/2 mt-6 md:mt-0">
+                            <h3 className="text-2xl font-bold mb-2">{feature.title}</h3>
+                            <p className="text-muted-foreground">{feature.description}</p>
+                        </div>
                     </CardContent>
                     </Card>
                 </div>
@@ -108,7 +112,7 @@ export function OnboardingCarousel() {
             </CarouselContent>
         </Carousel>
 
-        <div className="absolute bottom-10 z-10 w-full max-w-sm px-4 flex flex-col items-center gap-6">
+        <div className="absolute bottom-10 z-10 w-full max-w-sm md:max-w-xl px-4 flex flex-col items-center gap-6">
             <div className="flex gap-2">
                 {Array.from({ length: count }).map((_, index) => (
                     <button
