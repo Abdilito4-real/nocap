@@ -65,6 +65,48 @@
       "description": "User video thumbnail of a park on campus",
       "imageUrl": "https://images.unsplash.com/photo-1657840724060-65ea56bce6e6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjYW1wdXMlMjBwYXJrfGVufDB8fHx8MTc3MTAyNTQ4NXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "campus park"
+    },
+    {
+      "id": "onboarding_video_feed",
+      "description": "Onboarding image for video feed",
+      "imageUrl": "https://images.unsplash.com/photo-1619462729367-e47da54ba992?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzb2NpYWwlMjBmZWVkfGVufDB8fHx8MTc3MDk2OTEzMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "social feed"
+    },
+    {
+      "id": "onboarding_assignments",
+      "description": "Onboarding image for assignments",
+      "imageUrl": "https://images.unsplash.com/photo-1618393678187-fb258b8ee191?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxhc3NpZ25tZW50JTIwdHJhY2tlcnxlbnwwfHx8fDE3NzEwMjU3NDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "assignment tracker"
+    },
+    {
+      "id": "onboarding_jobs",
+      "description": "Onboarding image for jobs",
+      "imageUrl": "https://images.unsplash.com/photo-1763718528755-4bca23f82ac3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxqb2IlMjBib2FyZHxlbnwwfHx8fDE3NzA5MzkyMTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "job board"
+    },
+    {
+      "id": "onboarding_confessions",
+      "description": "Onboarding image for anonymous confessions",
+      "imageUrl": "https://images.unsplash.com/photo-1577764515560-65b415d68126?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxhbm9ueW1vdXMlMjBjaGF0fGVufDB8fHx8MTc3MTAyNTc0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "anonymous chat"
+    },
+    {
+      "id": "onboarding_events",
+      "description": "Onboarding image for events feature",
+      "imageUrl": "https://images.unsplash.com/photo-1721108190557-6102c42ca262?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzdHVkZW50JTIwZXZlbnRzfGVufDB8fHx8MTc3MTAyNTc0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "student events"
+    },
+    {
+      "id": "onboarding_study_groups",
+      "description": "Onboarding image for study groups feature",
+      "imageUrl": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzdHVkeSUyMGdyb3VwfGVufDB8fHx8MTc3MTAyNTc0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "study group"
+    },
+    {
+      "id": "onboarding_budgeting",
+      "description": "Onboarding image for budgeting feature",
+      "imageUrl": "https://images.unsplash.com/photo-1656049471577-1c10b7359c7d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxidWRnZXRpbmclMjB0b29sfGVufDB8fHx8MTc3MTAyNTc0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "budgeting tool"
     }
   ]
 }

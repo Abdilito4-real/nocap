@@ -1,5 +1,5 @@
-import { AuthPage } from '@/components/AuthPage';
+import { SplashScreen } from '@/components/SplashScreen';
 
 export default function Home() {
-  return <AuthPage />;
+  return <SplashScreen />;
 }
