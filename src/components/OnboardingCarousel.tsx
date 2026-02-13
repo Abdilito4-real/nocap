@@ -99,7 +99,7 @@ export function OnboardingCarousel() {
                             />
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10 rounded-lg" />
-                        <div className="relative z-10 w-full text-left">
+                        <div className="relative z-10 w-full text-left mb-24 md:mb-6">
                             <h3 className="text-2xl md:text-3xl font-bold mb-2">{feature.title}</h3>
                             <p className="text-white/90 text-base md:text-lg">{feature.description}</p>
                         </div>
@@ -118,8 +118,8 @@ export function OnboardingCarousel() {
                         key={index}
                         onClick={() => api?.scrollTo(index)}
                         className={cn(
-                            'h-2 w-2 rounded-full transition-all',
-                            current === index ? 'w-4 bg-primary' : 'bg-white/50'
+                            'h-2 w-2 rounded-full transition-all bg-white/50',
+                            current === index ? 'w-4 bg-primary' : 'bg-white/80'
                         )}
                         aria-label={`Go to slide ${index + 1}`}
                     />
