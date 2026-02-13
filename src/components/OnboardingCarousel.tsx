@@ -87,22 +87,21 @@ export function OnboardingCarousel() {
                 <CarouselItem key={index}>
                 <div className="p-1">
                     <Card className="border-none shadow-none bg-transparent">
-                    <CardContent className="flex flex-col md:flex-row items-center justify-center p-6 md:gap-8 md:text-left text-center h-[600px] md:h-[450px]">
+                    <CardContent className="relative flex flex-col items-center justify-end p-6 h-[600px] md:h-[450px] text-white">
                         {feature.image && (
-                            <div className="relative w-[300px] h-[400px] md:w-1/2 md:h-full flex-shrink-0">
-                                <Image
-                                    src={feature.image.imageUrl}
-                                    alt={feature.title}
-                                    layout="fill"
-                                    objectFit="cover"
-                                    className="rounded-lg shadow-lg"
-                                    data-ai-hint={feature.image.imageHint}
-                                />
-                            </div>
+                            <Image
+                                src={feature.image.imageUrl}
+                                alt={feature.title}
+                                layout="fill"
+                                objectFit="cover"
+                                className="rounded-lg shadow-lg"
+                                data-ai-hint={feature.image.imageHint}
+                            />
                         )}
-                        <div className="md:w-1/2 mt-6 md:mt-0">
-                            <h3 className="text-2xl font-bold mb-2">{feature.title}</h3>
-                            <p className="text-muted-foreground">{feature.description}</p>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10 rounded-lg" />
+                        <div className="relative z-10 w-full text-left">
+                            <h3 className="text-2xl md:text-3xl font-bold mb-2">{feature.title}</h3>
+                            <p className="text-white/90 text-base md:text-lg">{feature.description}</p>
                         </div>
                     </CardContent>
                     </Card>
@@ -120,7 +119,7 @@ export function OnboardingCarousel() {
                         onClick={() => api?.scrollTo(index)}
                         className={cn(
                             'h-2 w-2 rounded-full transition-all',
-                            current === index ? 'w-4 bg-primary' : 'bg-gray-300 dark:bg-gray-700'
+                            current === index ? 'w-4 bg-primary' : 'bg-white/50'
                         )}
                         aria-label={`Go to slide ${index + 1}`}
                     />
