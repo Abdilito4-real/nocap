@@ -116,7 +116,7 @@ export function OnboardingCarousel() {
                         onClick={() => api?.scrollTo(index)}
                         className={cn(
                             'h-2 w-2 rounded-full transition-all',
-                            current === index ? 'w-4 bg-primary' : 'bg-muted'
+                            current === index ? 'w-4 bg-primary' : 'bg-gray-300 dark:bg-gray-700'
                         )}
                         aria-label={`Go to slide ${index + 1}`}
                     />
