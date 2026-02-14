@@ -19,8 +19,8 @@ const getImage = (id: string): ImagePlaceholder | undefined => PlaceHolderImages
 
 const features = [
   {
-    title: 'Your Campus Life, Reimagined',
-    description: "Connect with friends, share moments, and stay in the loop with our dynamic video feed.",
+    title: 'Your campus. Unfiltered. All in one.',
+    description: "The first app that brings together academics, confessions, jobs, and community – built for students, by students.",
     image: getImage('onboarding_video_feed'),
   },
   {
@@ -132,7 +132,7 @@ export function OnboardingCarousel() {
                 </Button>
             ) : (
                 <Button onClick={handleNext} className="w-full" size="lg">
-                    Get It
+                    Next
                 </Button>
             )}
         </div>

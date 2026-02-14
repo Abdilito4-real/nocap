@@ -68,9 +68,9 @@
     },
     {
       "id": "onboarding_video_feed",
-      "description": "Onboarding image for video feed",
-      "imageUrl": "https://images.unsplash.com/photo-1619462729367-e47da54ba992?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzb2NpYWwlMjBmZWVkfGVufDB8fHx8MTc3MDk2OTEzMHww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "social feed"
+      "description": "Onboarding image showing a diverse group of students on campus",
+      "imageUrl": "https://res.cloudinary.com/dlin3ddon/image/upload/v1771072054/oddqsn104bjybhnr5blu.png",
+      "imageHint": "students campus"
     },
     {
       "id": "onboarding_assignments",
