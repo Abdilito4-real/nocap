@@ -6,6 +6,9 @@ import { FirebaseClientProvider } from '@/firebase/client-provider';
 export const metadata: Metadata = {
   title: 'NoCap',
   description: 'A student-centric social and utility app.',
+  icons: {
+    icon: '/icons/icon-192x192.png',
+  },
 };
 
 export default function RootLayout({
