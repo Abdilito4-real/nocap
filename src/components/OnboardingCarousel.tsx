@@ -106,8 +106,8 @@ export function OnboardingCarousel() {
                             <Image
                                 src={feature.image.imageUrl}
                                 alt={feature.title}
-                                layout="fill"
-                                objectFit="cover"
+                                fill
+                                style={{objectFit: "cover"}}
                                 className="rounded-lg shadow-lg"
                                 data-ai-hint={feature.image.imageHint}
                             />
