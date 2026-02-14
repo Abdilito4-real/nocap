@@ -86,6 +86,15 @@ export function OnboardingCarousel() {
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen w-full bg-background overflow-hidden">
+        
+        {!isLastSlide && (
+          <div className="absolute top-4 right-4 z-20">
+              <Button asChild variant="ghost" className="text-white/80 hover:text-white">
+                  <Link href="/auth">Skip</Link>
+              </Button>
+          </div>
+        )}
+
         <Carousel setApi={setApi} className="w-full max-w-sm md:max-w-xl">
             <CarouselContent>
             {features.map((feature, index) => (
@@ -137,14 +146,9 @@ export function OnboardingCarousel() {
                       <Link href="/auth">Get It</Link>
                   </Button>
               ) : (
-                  <>
-                      <Button onClick={handleNext} className="w-full" size="lg">
-                          Next
-                      </Button>
-                      <Button asChild variant="ghost" className="text-white/80 hover:text-white">
-                          <Link href="/auth">Skip</Link>
-                      </Button>
-                  </>
+                  <Button onClick={handleNext} className="w-full" size="lg">
+                      Next
+                  </Button>
               )}
             </div>
         </div>
