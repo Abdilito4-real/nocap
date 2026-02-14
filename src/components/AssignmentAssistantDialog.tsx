@@ -137,7 +137,15 @@ If the file or key is missing, you can create a key in the Google Cloud Console 
                         <CardContent>
                             <div className="flex flex-wrap gap-2">
                                 {aiResponse.suggestedResources.map((resource, index) => (
-                                    <Badge key={index} variant="secondary">{resource}</Badge>
+                                    <a
+                                        key={index}
+                                        href={`https://www.google.com/search?q=${encodeURIComponent(resource)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="transition-transform transform hover:scale-105"
+                                    >
+                                        <Badge variant="secondary" className="cursor-pointer">{resource}</Badge>
+                                    </a>
                                 ))}
                             </div>
                         </CardContent>
