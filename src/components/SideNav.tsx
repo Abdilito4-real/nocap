@@ -32,10 +32,6 @@ export function SideNav() {
           width={32}
           height={32}
         />
-        <div className="flex items-baseline">
-            <h1 className="text-2xl font-bold text-primary">No</h1>
-            <h1 className="text-2xl font-bold text-accent">Cap</h1>
-        </div>
       </div>
       <nav className="flex-1 px-4 space-y-2">
         {mainNavItems.map((item) => {

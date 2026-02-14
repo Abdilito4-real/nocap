@@ -25,10 +25,6 @@ export function AuthPage() {
             width={32}
             height={32}
           />
-           <div className="flex items-baseline">
-                <h1 className="text-3xl font-bold text-primary">No</h1>
-                <h1 className="text-3xl font-bold text-accent">Cap</h1>
-            </div>
         </div>
         <p className="text-muted-foreground mb-8 max-w-sm">
           Your campus. Unfiltered. All in one.

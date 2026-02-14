@@ -23,12 +23,8 @@ export function SplashScreen() {
           alt="NoCap Logo"
           width={96}
           height={96}
-          className="animate-subtle-bounce"
+          className="animate-bounce"
         />
-        <div className="flex items-baseline">
-          <h1 className="text-6xl font-bold text-primary">No</h1>
-          <h1 className="text-6xl font-bold text-accent">Cap</h1>
-        </div>
         <p className="text-muted-foreground">Your campus. Unfiltered. All in one.</p>
       </div>
     </div>
