@@ -22,19 +22,17 @@ export function FirebaseClientProvider({
 
   useEffect(() => {
     // This ensures that Firebase is initialized only on the client side.
-    if (typeof window !== 'undefined') {
-      setInstances(initializeFirebase());
+    const firebaseInstances = initializeFirebase();
+    if (firebaseInstances) {
+      setInstances(firebaseInstances);
     }
   }, []);
 
-  // While Firebase is initializing, you can show a loader or nothing.
-  // This prevents children from trying to access Firebase before it's ready.
-  if (!instances) {
-    return null;
-  }
-
+  // We always render the provider. It will pass down `null` for Firebase
+  // services if initialization hasn't happened or failed. The custom
+  // hooks like `useAuth` are designed to handle this gracefully.
   return (
-    <FirebaseProvider value={instances}>
+    <FirebaseProvider value={instances || { app: null, auth: null, firestore: null }}>
       {children}
     </FirebaseProvider>
   );

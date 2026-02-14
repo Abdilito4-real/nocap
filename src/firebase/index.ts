@@ -8,7 +8,13 @@ export function initializeFirebase(): {
   app: FirebaseApp;
   auth: Auth;
   firestore: Firestore;
-} {
+} | null {
+  // Prevent initialization if the API key is missing.
+  if (!firebaseConfig.apiKey) {
+    console.warn("Firebase config is missing, Firebase will not be initialized. Please add your Firebase project config to .env");
+    return null;
+  }
+
   const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
   const auth = getAuth(app);
   const firestore = getFirestore(app);
