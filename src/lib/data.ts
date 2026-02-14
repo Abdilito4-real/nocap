@@ -1,7 +1,9 @@
 import type { ImagePlaceholder } from './placeholder-images';
 import { PlaceHolderImages } from './placeholder-images';
+import { addDays, subDays } from 'date-fns';
 
 const getImage = (id: string): ImagePlaceholder | undefined => PlaceHolderImages.find(img => img.id === id);
+const today = new Date();
 
 export const onboardingFeatures = [
   {
@@ -92,11 +94,14 @@ export const videoPosts = [
 ];
 
 export const assignments = [
-  { id: 1, courseCode: 'CS101', title: 'Data Structures Essay', dueDate: '2024-10-25', completed: false },
-  { id: 2, courseCode: 'ENG203', title: 'Shakespeare Analysis', dueDate: '2024-10-28', completed: false },
-  { id: 3, courseCode: 'PHY301', title: 'Quantum Mechanics Problem Set', dueDate: '2024-11-02', completed: true },
-  { id: 4, courseCode: 'ART100', title: 'Renaissance Art History Presentation', dueDate: '2024-11-05', completed: false },
+  { id: 1, courseCode: 'CS101', title: 'Data Structures Essay', dueDate: today.toISOString(), completed: false },
+  { id: 2, courseCode: 'ENG203', title: 'Shakespeare Analysis', dueDate: addDays(today, 2).toISOString(), completed: false },
+  { id: 4, courseCode: 'ART100', title: 'Renaissance Art History Presentation', dueDate: addDays(today, 5).toISOString(), completed: false },
+  { id: 6, courseCode: 'HIS101', title: 'Ancient Civilizations Paper', dueDate: subDays(today, 1).toISOString(), completed: false },
+  { id: 3, courseCode: 'PHY301', title: 'Quantum Mechanics Problem Set', dueDate: subDays(today, 3).toISOString(), completed: true },
+  { id: 5, courseCode: 'MTH210', title: 'Calculus II Final Review', dueDate: subDays(today, 10).toISOString(), completed: true },
 ];
+
 
 export const jobs = [
   {
