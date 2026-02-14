@@ -115,9 +115,13 @@ export function AuthPage() {
         );
         await handleNotificationsAndRedirect();
       } catch (error: any) {
+         let description = error.message || 'An unknown error occurred. Please try again.';
+         if (error.code === 'auth/configuration-not-found') {
+           description = 'Authentication provider is not configured. Please make sure you have enabled Email/Password sign-in method in your Firebase project console.';
+         }
          toast({
           title: 'Authentication Error',
-          description: error.message || 'An unknown error occurred. Please try again.',
+          description: description,
           variant: 'destructive',
         });
       } finally {
@@ -162,9 +166,13 @@ export function AuthPage() {
             setIsLoading(false);
           });
       } catch (error: any) { // Catches Auth errors for sign up
+        let description = error.message || 'An unknown error occurred during sign up. Please try again.';
+        if (error.code === 'auth/configuration-not-found') {
+           description = 'Authentication provider is not configured. Please make sure you have enabled Email/Password sign-in method in your Firebase project console.';
+         }
         toast({
           title: 'Authentication Error',
-          description: error.message || 'An unknown error occurred during sign up. Please try again.',
+          description: description,
           variant: 'destructive',
         });
         setIsLoading(false);
@@ -209,9 +217,13 @@ export function AuthPage() {
         });
 
     } catch (error: any) {
+      let description = error.message || 'Could not sign in with Google. Please try again.';
+      if (error.code === 'auth/configuration-not-found') {
+        description = 'Authentication provider is not configured. Please make sure you have enabled Google sign-in method in your Firebase project console.';
+      }
       toast({
         title: 'Google Sign-In Error',
-        description: error.message || 'Could not sign in with Google. Please try again.',
+        description: description,
         variant: 'destructive',
       });
       setIsGoogleLoading(false);
