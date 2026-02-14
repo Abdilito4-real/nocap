@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AppLayout } from '@/components/AppLayout';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { AddAssignmentDialog } from '@/components/AddAssignmentDialog';
+import { AssignmentAssistantDialog } from '@/components/AssignmentAssistantDialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -82,7 +83,7 @@ export default function AssignmentsPage() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: index * 0.05 }}
       >
-        <Card className={cn("transition-all hover:shadow-md border-2", urgency.cardClass)}>
+        <Card className={cn("transition-all hover:shadow-md border-2 flex flex-col", urgency.cardClass)}>
           <CardHeader className="p-4">
             <div className="flex justify-between items-start">
               <div>
@@ -92,7 +93,7 @@ export default function AssignmentsPage() {
               <Badge variant="outline" className={cn("border-2", urgency.badgeClass)}>{urgency.label}</Badge>
             </div>
           </CardHeader>
-          <CardContent className="p-4 pt-0">
+          <CardContent className="p-4 pt-0 flex-grow">
              <div className="flex justify-between items-center">
                 <p className="text-sm text-muted-foreground">
                   {assignment.completed ? `Completed on ${format(new Date(assignment.dueDate), "EEE, MMM d")}` : `Due on ${format(new Date(assignment.dueDate), "EEE, MMM d")}`}
@@ -113,6 +114,11 @@ export default function AssignmentsPage() {
                 </div>
             </div>
           </CardContent>
+          {!assignment.completed && (
+            <CardFooter className="p-2 border-t bg-card mt-auto">
+                <AssignmentAssistantDialog assignment={assignment} />
+            </CardFooter>
+          )}
         </Card>
       </motion.div>
     );
