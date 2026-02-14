@@ -43,9 +43,13 @@ export function AssignmentAssistantDialog({ assignment }: AssignmentAssistantDia
       setAiResponse(response);
     } catch (error: any) {
       console.error('Failed to get AI assistance:', error);
+      let description = error.message || 'Could not get suggestions. Please try again.';
+      if (error.message && (error.message.includes('403 Forbidden') || error.message.includes('permission is denied'))) {
+        description = 'AI service access denied. Please go to your Google Cloud Console, select your project, and ensure the "Generative Language API" is enabled, then try again.';
+      }
       toast({
         title: 'AI Assistant Error',
-        description: error.message || 'Could not get suggestions. Please try again.',
+        description: description,
         variant: 'destructive',
       });
     } finally {
