@@ -44,7 +44,9 @@ export function AssignmentAssistantDialog({ assignment }: AssignmentAssistantDia
     } catch (error: any) {
       console.error('Failed to get AI assistance:', error);
       let description = error.message || 'Could not get suggestions. Please try again.';
-      if (error.message && (error.message.includes('403 Forbidden') || error.message.includes('permission is denied'))) {
+      if (error.message && error.message.includes('generativelanguage.googleapis.com')) {
+        description = `AI service access denied. This usually means the 'Generative Language API' (also known as the Gemini API) isn't enabled. Please go to your Google Cloud Console for project 'studio-1986122519-7a15c', search for and enable the "Generative Language API", and then try again.`;
+      } else if (error.message && (error.message.includes('403 Forbidden') || error.message.includes('permission is denied'))) {
         description = `AI service access denied. This usually means the necessary API isn't enabled. Please go to your Google Cloud Console for project 'studio-1986122519-7a15c', search for and enable the "Vertex AI API", and then try again.`;
       }
       toast({
