@@ -11,7 +11,7 @@ export function initializeFirebase(): {
 } | null {
   // Prevent initialization if the API key is missing.
   if (!firebaseConfig.apiKey) {
-    console.warn("Firebase config is missing, Firebase will not be initialized. Please add your Firebase project config to .env");
+    console.warn("Firebase config not found. The app will run without Firebase features. To enable them, please add your Firebase project configuration to your .env file.");
     return null;
   }
 
