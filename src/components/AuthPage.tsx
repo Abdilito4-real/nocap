@@ -60,25 +60,17 @@ export function AuthPage() {
   const auth = useAuth();
   const firestore = useFirestore();
 
-  const formSchema = isLogin
-    ? loginSchema
-    : signupSchema.extend({ name: signupSchema.shape.name });
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signupSchema>>({
+    resolver: zodResolver(isLogin ? loginSchema : signupSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
-      ...(isLogin ? {} : { name: '' }),
     },
   });
 
   React.useEffect(() => {
-    form.reset({
-      email: '',
-      password: '',
-      ...(isLogin ? {} : { name: '' }),
-    });
+    form.reset();
   }, [isLogin, form]);
 
   const handleNotificationsAndRedirect = async () => {
@@ -98,7 +90,7 @@ export function AuthPage() {
     router.push('/feed');
   };
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof signupSchema>) => {
     if (!auth || !firestore) {
       toast({
         title: 'Error',
@@ -112,23 +104,21 @@ export function AuthPage() {
 
     try {
       if (isLogin) {
-        const loginValues = values as z.infer<typeof loginSchema>;
         await signInWithEmailAndPassword(
           auth,
-          loginValues.email,
-          loginValues.password
+          values.email,
+          values.password
         );
       } else {
-        const signupValues = values as z.infer<typeof signupSchema>;
         const userCredential = await createUserWithEmailAndPassword(
           auth,
-          signupValues.email,
-          signupValues.password
+          values.email,
+          values.password
         );
         const user = userCredential.user;
-        await updateProfile(user, { displayName: signupValues.name });
+        await updateProfile(user, { displayName: values.name });
         await setDoc(doc(firestore, 'users', user.uid), {
-          displayName: signupValues.name,
+          displayName: values.name,
           email: user.email,
           photoURL: user.photoURL,
         });
