@@ -117,10 +117,7 @@ export function AuthPage() {
       } catch (error: any) {
          toast({
           title: 'Authentication Error',
-          description:
-            error.code === 'auth/invalid-credential'
-              ? 'Invalid email or password.'
-              : 'An error occurred. Please try again.',
+          description: error.message || 'An unknown error occurred. Please try again.',
           variant: 'destructive',
         });
       } finally {
@@ -167,7 +164,7 @@ export function AuthPage() {
       } catch (error: any) { // Catches Auth errors for sign up
         toast({
           title: 'Authentication Error',
-          description: 'An error occurred during sign up. Please try again.',
+          description: error.message || 'An unknown error occurred during sign up. Please try again.',
           variant: 'destructive',
         });
         setIsLoading(false);
@@ -214,7 +211,7 @@ export function AuthPage() {
     } catch (error: any) {
       toast({
         title: 'Google Sign-In Error',
-        description: 'Could not sign in with Google. Please try again.',
+        description: error.message || 'Could not sign in with Google. Please try again.',
         variant: 'destructive',
       });
       setIsGoogleLoading(false);
