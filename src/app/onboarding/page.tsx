@@ -1,5 +1,26 @@
+'use client';
+
 import { OnboardingCarousel } from '@/components/OnboardingCarousel';
+import { DesktopOnboarding } from '@/components/DesktopOnboarding';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useEffect, useState } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function OnboardingPage() {
-    return <OnboardingCarousel />;
+    const isMobile = useIsMobile();
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    if (!isClient) {
+        return (
+            <div className="flex h-screen w-full items-center justify-center">
+                <Skeleton className="h-full w-full" />
+            </div>
+        );
+    }
+
+    return isMobile ? <OnboardingCarousel /> : <DesktopOnboarding />;
 }

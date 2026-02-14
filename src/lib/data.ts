@@ -3,6 +3,49 @@ import { PlaceHolderImages } from './placeholder-images';
 
 const getImage = (id: string): ImagePlaceholder | undefined => PlaceHolderImages.find(img => img.id === id);
 
+export const onboardingFeatures = [
+  {
+    title: 'Your campus. Unfiltered. All in one.',
+    description: "The first app that brings together academics, confessions, jobs, and community – built for students, by students.",
+    image: getImage('onboarding_video_feed'),
+  },
+  {
+    title: 'Never Miss a Deadline',
+    description: 'Track all your assignments, quizzes, and exams in one place. Stay organized and on top of your coursework.',
+    image: getImage('onboarding_assignments'),
+  },
+  {
+    title: 'Find Your Next Opportunity',
+    description: 'Discover part-time jobs, internships, and on-campus gigs tailored for students.',
+    image: getImage('onboarding_jobs'),
+  },
+  {
+    title: 'Share Your Thoughts Anonymously',
+    description: 'A safe space to share confessions, thoughts, and feelings without revealing your identity.',
+    image: getImage('onboarding_confessions'),
+  },
+  {
+    title: 'Discover and Join Events',
+    description: "From campus parties to study workshops, find out what's happening and get involved.",
+    image: getImage('onboarding_events'),
+  },
+  {
+    title: 'Collaborate and Succeed',
+    description: 'Create or join study groups to conquer challenging subjects together with your peers.',
+    image: getImage('onboarding_study_groups'),
+  },
+  {
+    title: 'Master Your Finances',
+    description: 'A simple budgeting tool to help you manage your expenses, save money, and stay on track.',
+    image: getImage('onboarding_budgeting'),
+  },
+  {
+    title: 'Your Entire Campus Life, Organized',
+    description: "From your video posts and saved jobs to upcoming assignments, your profile keeps everything in one place.",
+    image: getImage('onboarding_profile_summary'),
+  },
+];
+
 export const videoPosts = [
   {
     id: 1,
