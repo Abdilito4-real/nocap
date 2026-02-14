@@ -41,14 +41,13 @@ export function AssignmentAssistantDialog({ assignment }: AssignmentAssistantDia
         courseCode: assignment.courseCode,
       });
       setAiResponse(response);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to get AI assistance:', error);
       toast({
         title: 'AI Assistant Error',
-        description: 'Could not get suggestions. Please try again.',
+        description: error.message || 'Could not get suggestions. Please try again.',
         variant: 'destructive',
       });
-      setIsOpen(false); // Close dialog on error
     } finally {
       setIsLoading(false);
     }
