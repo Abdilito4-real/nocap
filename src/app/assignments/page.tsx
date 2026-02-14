@@ -1,6 +1,7 @@
+
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { AppLayout } from '@/components/AppLayout';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
@@ -13,11 +14,18 @@ import { assignments as initialAssignments } from '@/lib/data';
 import { format, differenceInDays, isToday, isPast } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Filter } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type Assignment = typeof initialAssignments[0];
 
 export default function AssignmentsPage() {
   const [assignments, setAssignments] = useState(initialAssignments);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
 
   const handleToggleComplete = (id: number) => {
     setAssignments(
@@ -123,6 +131,12 @@ export default function AssignmentsPage() {
       </motion.div>
     );
   };
+  
+  const SkeletonGrid = () => (
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-48 w-full" />)}
+    </div>
+  );
 
   return (
     <AppLayout>
@@ -143,21 +157,23 @@ export default function AssignmentsPage() {
         <div className="space-y-8">
           <div>
             <h2 className="text-2xl font-semibold mb-4">Upcoming</h2>
-            {upcomingAssignments.length > 0 ? (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {upcomingAssignments.sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()).map((assignment, index) => (
-                  <AssignmentCard key={assignment.id} assignment={assignment} onToggle={handleToggleComplete} index={index} />
-                ))}
-              </div>
-            ) : (
-              <Card className="flex flex-col items-center justify-center p-8 text-center bg-muted/50 border-dashed">
-                <p className="mb-4 text-muted-foreground">No upcoming assignments. Time to relax or get ahead!</p>
-                <AddAssignmentDialog />
-              </Card>
-            )}
+             {!isClient ? <SkeletonGrid /> : (
+                upcomingAssignments.length > 0 ? (
+                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    {upcomingAssignments.sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()).map((assignment, index) => (
+                      <AssignmentCard key={assignment.id} assignment={assignment} onToggle={handleToggleComplete} index={index} />
+                    ))}
+                  </div>
+                ) : (
+                  <Card className="flex flex-col items-center justify-center p-8 text-center bg-muted/50 border-dashed">
+                    <p className="mb-4 text-muted-foreground">No upcoming assignments. Time to relax or get ahead!</p>
+                    <AddAssignmentDialog />
+                  </Card>
+                )
+             )}
           </div>
 
-          {completedAssignments.length > 0 && (
+          {isClient && completedAssignments.length > 0 && (
             <div>
               <h2 className="text-2xl font-semibold mb-4">Completed</h2>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
