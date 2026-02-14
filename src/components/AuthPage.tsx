@@ -19,7 +19,10 @@ export function AuthPage() {
       <div className="relative z-10 flex flex-col items-center text-center p-4">
         <div className="flex items-center gap-2 mb-4">
           <Icons.logo className="h-8 w-8 text-primary" />
-          <h1 className="text-3xl font-bold text-foreground">NoCap</h1>
+           <div className="flex items-baseline">
+                <h1 className="text-3xl font-bold text-primary">No</h1>
+                <h1 className="text-3xl font-bold text-accent">Cap</h1>
+            </div>
         </div>
         <p className="text-muted-foreground mb-8 max-w-sm">
           Your campus. Unfiltered. All in one.

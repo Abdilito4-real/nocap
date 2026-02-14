@@ -27,7 +27,10 @@ export function SideNav() {
     <aside className="w-64 border-r bg-card flex flex-col">
       <div className="p-4 flex items-center gap-2">
         <Icons.logo className="h-8 w-8 text-primary" />
-        <h1 className="text-2xl font-bold text-foreground">NoCap</h1>
+        <div className="flex items-baseline">
+            <h1 className="text-2xl font-bold text-primary">No</h1>
+            <h1 className="text-2xl font-bold text-accent">Cap</h1>
+        </div>
       </div>
       <nav className="flex-1 px-4 space-y-2">
         {mainNavItems.map((item) => {
