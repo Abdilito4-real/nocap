@@ -44,11 +44,15 @@ export function OnboardingCarousel() {
         
         {!isLastSlide && (
           <div className="absolute top-4 right-4 z-20">
-              <Button asChild variant="ghost" className="text-white/80 hover:text-white">
+              <Button asChild variant="outline" className="text-white/90 border-white/40 bg-black/20 backdrop-blur-sm hover:bg-white/10 hover:text-white">
                   <Link href="/auth">Skip</Link>
               </Button>
           </div>
         )}
+
+        <div className="absolute bottom-4 left-4 z-20">
+            <Image src="/icons/icon-192x192.png" alt="NoCap Logo" width={40} height={40} />
+        </div>
 
         <Carousel setApi={setApi} className="w-full max-w-sm md:max-w-xl">
             <CarouselContent>
