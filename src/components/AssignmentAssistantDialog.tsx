@@ -45,7 +45,7 @@ export function AssignmentAssistantDialog({ assignment }: AssignmentAssistantDia
       console.error('Failed to get AI assistance:', error);
       let description = error.message || 'Could not get suggestions. Please try again.';
       if (error.message && (error.message.includes('403 Forbidden') || error.message.includes('permission is denied'))) {
-        description = 'AI service access denied. Please go to your Google Cloud Console, select your project, and ensure the "Generative Language API" is enabled, then try again.';
+        description = `AI service access denied. This usually means the necessary API isn't enabled. Please go to your Google Cloud Console for project 'studio-1986122519-7a15c', search for and enable the "Vertex AI API", and then try again.`;
       }
       toast({
         title: 'AI Assistant Error',
