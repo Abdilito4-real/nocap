@@ -9,6 +9,8 @@ import {
   BookCheck,
   MessageSquareOff,
   GraduationCap,
+  Bot,
+  User,
 } from 'lucide-react';
 
 import {
@@ -24,11 +26,15 @@ import { cn } from '@/lib/utils';
 
 // Icons configuration
 const floatingIcons = [
-  { icon: Home, className: 'top-[15%] left-[10%]', delay: '0s', duration: '8s' },
-  { icon: Briefcase, className: 'top-[20%] right-[15%]', delay: '1s', duration: '10s' },
-  { icon: BookCheck, className: 'bottom-[25%] left-[15%]', delay: '2s', duration: '7s' },
-  { icon: MessageSquareOff, className: 'bottom-[15%] right-[10%]', delay: '3s', duration: '9s' },
-  { icon: GraduationCap, className: 'top-[55%] left-[25%] md:left-[35%]', delay: '4s', duration: '11s' },
+  { icon: Home, className: 'top-[15%] left-[10%]', colorClasses: 'bg-yellow-400/10 text-yellow-200', delay: '0s', duration: '8s' },
+  { icon: Briefcase, className: 'top-[20%] right-[15%]', colorClasses: 'bg-green-400/10 text-green-200', delay: '1s', duration: '10s' },
+  { icon: BookCheck, className: 'bottom-[25%] left-[15%]', colorClasses: 'bg-blue-400/10 text-blue-200', delay: '2s', duration: '7s' },
+  { icon: MessageSquareOff, className: 'bottom-[15%] right-[10%]', colorClasses: 'bg-red-400/10 text-red-200', delay: '3s', duration: '9s' },
+  { icon: GraduationCap, className: 'top-[55%] left-[25%]', colorClasses: 'bg-purple-400/10 text-purple-200', delay: '4s', duration: '11s' },
+  { icon: Bot, className: 'top-[70%] right-[20%]', colorClasses: 'bg-cyan-400/10 text-cyan-200', delay: '0.5s', duration: '12s' },
+  { icon: User, className: 'bottom-[40%] right-[45%]', colorClasses: 'bg-pink-400/10 text-pink-200', delay: '1.5s', duration: '8s' },
+  { icon: Home, className: 'top-[5%] right-[5%]', colorClasses: 'bg-yellow-400/10 text-yellow-200', delay: '2.5s', duration: '9s' },
+  { icon: BookCheck, className: 'bottom-[5%] left-[5%]', colorClasses: 'bg-blue-400/10 text-blue-200', delay: '3.5s', duration: '10s' },
 ];
 
 export function OnboardingCarousel() {
@@ -65,8 +71,9 @@ export function OnboardingCarousel() {
           <div
             key={index}
             className={cn(
-              'absolute animate-float text-white/80 bg-white/10 backdrop-blur-md p-4 rounded-2xl shadow-lg',
-              item.className
+              'absolute animate-float backdrop-blur-md p-4 rounded-2xl shadow-lg',
+              item.className,
+              item.colorClasses
             )}
             style={{ animationDelay: item.delay, animationDuration: item.duration }}
           >
