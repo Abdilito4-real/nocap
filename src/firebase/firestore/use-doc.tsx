@@ -11,14 +11,18 @@ import { useFirestore } from '../provider';
 import { errorEmitter } from '../error-emitter';
 import { FirestorePermissionError, type SecurityRuleContext } from '../errors';
 
-export function useDoc<T = DocumentData>(docPath: string) {
+export function useDoc<T = DocumentData>(docPath: string | null | undefined) {
   const firestore = useFirestore() as Firestore;
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    if (!firestore) return;
+    if (!firestore || !docPath) {
+      setData(null);
+      setLoading(false);
+      return;
+    }
 
     const docRef = doc(firestore, docPath);
 

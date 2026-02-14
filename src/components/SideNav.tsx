@@ -33,7 +33,7 @@ export function SideNav() {
           height={32}
         />
       </div>
-      <nav className="flex-1 px-4 space-y-2">
+      <nav className="px-4 space-y-2">
         {mainNavItems.map((item) => {
           const isActive = pathname === item.href;
           return (
@@ -68,7 +68,7 @@ export function SideNav() {
             );
         })}
       </nav>
-      <div className="p-4">
+      <div className="mt-auto p-4">
         <Link
           href={profileNavItem.href}
           className={cn(
