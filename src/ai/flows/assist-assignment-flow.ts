@@ -51,6 +51,9 @@ const assistAssignmentFlow = ai.defineFlow(
     outputSchema: AssistAssignmentOutputSchema,
   },
   async input => {
+    if (!process.env.GEMINI_API_KEY) {
+      throw new Error('The GEMINI_API_KEY environment variable is not set.');
+    }
     const {output} = await prompt(input);
     if (!output) {
       throw new Error('Failed to get assignment assistance from AI.');

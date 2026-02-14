@@ -45,7 +45,13 @@ export function AssignmentAssistantDialog({ assignment }: AssignmentAssistantDia
       console.error('Failed to get AI assistance:', error);
       let description = error.message || 'Could not get suggestions. Please try again.';
 
-      if (error.message && (error.message.includes('403 Forbidden') || error.message.includes('permission is denied'))) {
+      if (error.message && error.message.includes('The GEMINI_API_KEY environment variable is not set')) {
+        description = `The AI Assistant is missing its API key. Please create a file named '.env' in your project's root folder and add your Gemini API Key to it like this:
+
+GEMINI_API_KEY="YOUR_API_KEY_HERE"
+
+You can create a key in the Google Cloud Console for project 'studio-1986122519-7a15c' under 'APIs & Services > Credentials'. After adding the key, you may need to restart the application.`;
+      } else if (error.message && (error.message.includes('403 Forbidden') || error.message.includes('permission is denied'))) {
         description = `AI service access denied (403 Forbidden). You've confirmed the API is enabled—thank you! This error now likely means the API key is missing or invalid in your app's configuration.
 
 Please check for a file named '.env' in your project's root folder and ensure it contains your Gemini API Key like this:
