@@ -82,7 +82,7 @@ export function AuthPage() {
   }, [isLogin, form]);
 
   const handleNotificationsAndRedirect = async () => {
-    if (!isLogin && 'Notification' in window) {
+    if (!isLogin && 'Notification' in window && Notification.permission !== 'denied') {
       try {
         const permission = await Notification.requestPermission();
         if (permission === 'granted') {
@@ -177,127 +177,144 @@ export function AuthPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-background">
-      <div className="absolute inset-0 z-0 bg-gradient-to-br from-background via-blue-50/20 to-purple-50/20" />
-      <div className="relative z-10 flex flex-col items-center text-center p-4">
-        <div className="flex items-center gap-2 mb-4">
-          <Image
-            src="/icons/icon-192x192.png"
-            alt="NoCap Logo"
-            width={32}
-            height={32}
-          />
+    <div className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-2">
+      <div className="hidden lg:flex flex-col bg-muted p-10 text-foreground">
+        <div className="flex items-center gap-3">
+          <Image src="/icons/icon-192x192.png" alt="NoCap Logo" width={40} height={40} />
         </div>
-        <p className="text-muted-foreground mb-8 max-w-sm">
-          Your campus. Unfiltered. All in one.
-        </p>
-        <Card className="w-full max-w-sm">
-          <CardHeader>
-            <CardTitle>{isLogin ? 'Welcome Back' : 'Create an Account'}</CardTitle>
-            <CardDescription>
-              {isLogin
-                ? 'Enter your credentials to access your account.'
-                : "Let's get you started."}
-            </CardDescription>
-          </CardHeader>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <CardContent className="grid gap-4">
-                {!isLogin && (
+        <div className="m-auto max-w-md space-y-8">
+            <h1 className="text-4xl font-bold tracking-tight">Your campus life, organized.</h1>
+            <p className="text-muted-foreground">From assignments and job hunts to late-night confessions and viral campus clips, NoCap brings it all together.</p>
+        </div>
+        <div className="space-y-6">
+            <blockquote className="border-l-2 pl-6 italic">
+                "This is the one app every student needs. It's made my university experience so much more connected and manageable."
+            </blockquote>
+            <div className="text-sm">
+                <p className="font-semibold">Jessica P.</p>
+                <p className="text-muted-foreground">Computer Science, State University</p>
+            </div>
+             <div className="mt-8">
+                <p className="text-sm font-semibold text-muted-foreground mb-4">JOINING 10,000+ STUDENTS FROM</p>
+                 <div className="flex gap-6 items-center text-muted-foreground font-mono font-semibold">
+                     <span>State University</span>
+                     <span>City College</span>
+                     <span>Tech Institute</span>
+                 </div>
+             </div>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-center p-8">
+        <div className="mx-auto flex w-full flex-col justify-center space-y-6 max-w-sm">
+          <Card className="w-full">
+            <CardHeader className="text-center">
+              <CardTitle>{isLogin ? 'Welcome Back' : 'Create an Account'}</CardTitle>
+              <CardDescription>
+                {isLogin
+                  ? 'Enter your credentials to access your account.'
+                  : "Let's get you started."}
+              </CardDescription>
+            </CardHeader>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <CardContent className="grid gap-4">
+                  {!isLogin && (
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem className="text-left">
+                          <FormLabel>Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Alex Doe" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
                   <FormField
                     control={form.control}
-                    name="name"
+                    name="email"
                     render={({ field }) => (
                       <FormItem className="text-left">
-                        <FormLabel>Name</FormLabel>
+                        <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input placeholder="Alex Doe" {...field} />
+                          <Input
+                            type="email"
+                            placeholder="student@university.edu"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem className="text-left">
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input type="password" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+                <CardFooter className="flex flex-col gap-4">
+                  <Button
+                    type="submit"
+                    disabled={isLoading || isGoogleLoading}
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                  >
+                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {isLogin ? 'Log In' : 'Sign Up'}
+                  </Button>
+                </CardFooter>
+              </form>
+            </Form>
+            <div className="relative mb-4 px-6">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+            <div className="px-6 pb-6">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={handleGoogleSignIn}
+                disabled={isLoading || isGoogleLoading}
+              >
+                {isGoogleLoading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Icons.google className="mr-2 h-4 w-4" />
                 )}
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem className="text-left">
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="student@university.edu"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem className="text-left">
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input type="password" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-              <CardFooter className="flex flex-col gap-4">
-                <Button
-                  type="submit"
-                  disabled={isLoading || isGoogleLoading}
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-                >
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {isLogin ? 'Log In' : 'Sign Up'}
-                </Button>
-              </CardFooter>
-            </form>
-          </Form>
-          <div className="relative mb-4 px-6">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
+                Google
+              </Button>
             </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                Or continue with
-              </span>
-            </div>
-          </div>
-          <div className="px-6 pb-6">
+          </Card>
+          <p className="text-center text-sm text-muted-foreground">
+            {isLogin ? "Don't have an account?" : 'Already have an account?'}
             <Button
-              variant="outline"
-              className="w-full"
-              onClick={handleGoogleSignIn}
+              variant="link"
+              className="px-1"
+              onClick={() => setIsLogin(!isLogin)}
               disabled={isLoading || isGoogleLoading}
             >
-              {isGoogleLoading ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Icons.google className="mr-2 h-4 w-4" />
-              )}
-              Google
+              {isLogin ? 'Sign Up' : 'Log In'}
             </Button>
-          </div>
-        </Card>
-        <p className="mt-4 text-sm text-muted-foreground">
-          {isLogin ? "Don't have an account?" : 'Already have an account?'}
-          <Button
-            variant="link"
-            className="px-1"
-            onClick={() => setIsLogin(!isLogin)}
-            disabled={isLoading || isGoogleLoading}
-          >
-            {isLogin ? 'Sign Up' : 'Log In'}
-          </Button>
-        </p>
+          </p>
+        </div>
       </div>
     </div>
   );
