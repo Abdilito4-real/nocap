@@ -53,6 +53,11 @@ const features = [
     description: 'A simple budgeting tool to help you manage your expenses, save money, and stay on track.',
     image: getImage('onboarding_budgeting'),
   },
+  {
+    title: 'Your Entire Campus Life, Organized',
+    description: "From your video posts and saved jobs to upcoming assignments, your profile keeps everything in one place.",
+    image: getImage('onboarding_profile_summary'),
+  },
 ];
 
 export function OnboardingCarousel() {
@@ -126,15 +131,22 @@ export function OnboardingCarousel() {
                 ))}
             </div>
 
-            {isLastSlide && count > 0 ? (
-                <Button asChild className="w-full" size="lg">
-                    <Link href="/auth">Get Started</Link>
-                </Button>
-            ) : (
-                <Button onClick={handleNext} className="w-full" size="lg">
-                    Next
-                </Button>
-            )}
+            <div className="w-full flex flex-col items-center gap-2">
+              {isLastSlide && count > 0 ? (
+                  <Button asChild className="w-full" size="lg">
+                      <Link href="/auth">Get It</Link>
+                  </Button>
+              ) : (
+                  <>
+                      <Button onClick={handleNext} className="w-full" size="lg">
+                          Next
+                      </Button>
+                      <Button asChild variant="ghost" className="text-white/80 hover:text-white">
+                          <Link href="/auth">Skip</Link>
+                      </Button>
+                  </>
+              )}
+            </div>
         </div>
     </div>
   );

@@ -105,8 +105,14 @@
     {
       "id": "onboarding_budgeting",
       "description": "Onboarding image for budgeting feature",
-      "imageUrl": "https://images.unsplash.com/photo-1656049471577-1c10b7359c7d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxidWRnZXRpbmclMjB0b29sfGVufDB8fHx8MTc3MTAyNTc0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1656049471577-1c10b7359c7d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxidWRnZXRpbmclMjB0b29sfGVufDB8fHx8MTc7MTAyNTc0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "budgeting tool"
+    },
+    {
+      "id": "onboarding_profile_summary",
+      "description": "Onboarding image showing the user's profile summary screen",
+      "imageUrl": "https://res.cloudinary.com/dlin3ddon/image/upload/v1771072527/wtdjkeyye6ahr90a1fxm.png",
+      "imageHint": "profile summary"
     }
   ]
 }
