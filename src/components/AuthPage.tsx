@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/Icons';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 export function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -18,7 +19,12 @@ export function AuthPage() {
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-background via-blue-50/20 to-purple-50/20" />
       <div className="relative z-10 flex flex-col items-center text-center p-4">
         <div className="flex items-center gap-2 mb-4">
-          <Icons.logo className="h-8 w-8 text-primary" />
+          <Image
+            src="/icons/icon-192x192.png"
+            alt="NoCap Logo"
+            width={32}
+            height={32}
+          />
            <div className="flex items-baseline">
                 <h1 className="text-3xl font-bold text-primary">No</h1>
                 <h1 className="text-3xl font-bold text-accent">Cap</h1>

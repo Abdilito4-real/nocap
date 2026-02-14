@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Icons } from '@/components/Icons';
+import Image from 'next/image';
 
 export function SplashScreen() {
   const router = useRouter();
@@ -18,7 +18,13 @@ export function SplashScreen() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background">
       <div className="flex flex-col items-center gap-4">
-        <Icons.logo className="h-24 w-24 text-primary animate-subtle-bounce" />
+        <Image
+          src="/icons/icon-192x192.png"
+          alt="NoCap Logo"
+          width={96}
+          height={96}
+          className="animate-subtle-bounce"
+        />
         <div className="flex items-baseline">
           <h1 className="text-6xl font-bold text-primary">No</h1>
           <h1 className="text-6xl font-bold text-accent">Cap</h1>

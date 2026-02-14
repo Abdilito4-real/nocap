@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Briefcase, BookCheck, MessageSquareOff, User, Bot } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Icons } from '@/components/Icons';
+import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
 
 const mainNavItems = [
@@ -26,7 +26,12 @@ export function SideNav() {
   return (
     <aside className="w-64 border-r bg-card flex flex-col">
       <div className="p-4 flex items-center gap-2">
-        <Icons.logo className="h-8 w-8 text-primary" />
+        <Image
+          src="/icons/icon-192x192.png"
+          alt="NoCap Logo"
+          width={32}
+          height={32}
+        />
         <div className="flex items-baseline">
             <h1 className="text-2xl font-bold text-primary">No</h1>
             <h1 className="text-2xl font-bold text-accent">Cap</h1>
