@@ -62,28 +62,32 @@ export function OnboardingCarousel() {
   const isLastSlide = current === count - 1;
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen w-full bg-background overflow-hidden">
+    <div className="relative flex flex-col items-center justify-center min-h-screen w-full bg-black overflow-hidden">
       
-      {/* Background elements */}
+      {/* Background tilt */}
       <div className="absolute inset-0 z-0">
         <div className="absolute w-[150vw] h-[150vh] -top-1/4 -left-1/4 bg-primary/5 transform -rotate-12" />
+      </div>
+
+      {/* Floating Icons */}
+      <div className="absolute inset-0 z-20 pointer-events-none">
         {floatingIcons.map((item, index) => (
-          <div
-            key={index}
-            className={cn(
-              'absolute animate-float backdrop-blur-md p-4 rounded-2xl shadow-lg',
-              item.className,
-              item.colorClasses
-            )}
-            style={{ animationDelay: item.delay, animationDuration: item.duration }}
-          >
-            <item.icon className="h-8 w-8" />
-          </div>
-        ))}
+            <div
+                key={index}
+                className={cn(
+                'absolute animate-float backdrop-blur-md p-4 rounded-2xl shadow-lg',
+                item.className,
+                item.colorClasses
+                )}
+                style={{ animationDelay: item.delay, animationDuration: item.duration }}
+            >
+                <item.icon className="h-8 w-8" />
+            </div>
+            ))}
       </div>
 
       {!isLastSlide && (
-        <div className="absolute top-4 right-4 z-20">
+        <div className="absolute top-4 right-4 z-30">
           <Button
             asChild
             variant="outline"
@@ -94,7 +98,7 @@ export function OnboardingCarousel() {
         </div>
       )}
 
-      <div className="absolute bottom-4 left-4 z-20">
+      <div className="absolute bottom-4 left-4 z-30">
         <Image
           src="/icons/icon-192x192.png"
           alt="NoCap Logo"
@@ -120,8 +124,8 @@ export function OnboardingCarousel() {
                         data-ai-hint={feature.image.imageHint}
                       />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10 rounded-lg" />
-                    <div className="relative z-10 w-full text-left mb-24 md:mb-6">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 rounded-lg" />
+                    <div className="relative z-30 w-full text-left mb-24 md:mb-6">
                       <h3 className="text-2xl md:text-3xl font-bold mb-2">
                         {feature.title}
                       </h3>
@@ -137,7 +141,7 @@ export function OnboardingCarousel() {
         </CarouselContent>
       </Carousel>
 
-      <div className="absolute bottom-10 z-10 w-full max-w-sm md:max-w-xl px-4 flex flex-col items-center gap-6">
+      <div className="absolute bottom-10 z-30 w-full max-w-sm md:max-w-xl px-4 flex flex-col items-center gap-6">
         <div className="flex gap-2">
           {Array.from({ length: count }).map((_, index) => (
             <button
