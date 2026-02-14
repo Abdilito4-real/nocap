@@ -6,18 +6,21 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from '@/components/ui/dialog';
 import {
   assistWithAssignment,
   type AssistAssignmentOutput,
 } from '@/ai/flows/assist-assignment-flow';
-import { Bot, Loader2, Lightbulb, CheckSquare, Timer } from 'lucide-react';
+import { Bot, Loader2, Lightbulb, CheckSquare, Timer, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from './ui/badge';
+import { ScrollArea } from './ui/scroll-area';
 
 interface AssignmentAssistantDialogProps {
   assignment: {
@@ -34,7 +37,7 @@ export function AssignmentAssistantDialog({ assignment }: AssignmentAssistantDia
 
   const handleGetAssistance = async () => {
     setIsLoading(true);
-    setAiResponse(null);
+    // Not clearing the response here provides a better UX on "Regenerate"
     try {
       const response = await assistWithAssignment({
         title: assignment.title,
@@ -102,53 +105,66 @@ If the file or key is missing, you can create a key in the Google Cloud Console 
             <div className="flex flex-col items-center justify-center text-center gap-4 p-8 bg-muted/50 rounded-lg">
                 <Bot className="h-12 w-12 text-muted-foreground" />
                 <p className="text-muted-foreground">Let AI help you break down this task, find resources, and estimate the time required.</p>
-                <Button onClick={handleGetAssistance}>
-                    <Lightbulb className="mr-2 h-4 w-4" />
+                <Button onClick={handleGetAssistance} disabled={isLoading}>
+                    {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Lightbulb className="mr-2 h-4 w-4" />}
                     Get Suggestions
                 </Button>
             </div>
           )}
-          {isLoading && (
+          {isLoading && !aiResponse && (
             <div className="flex flex-col items-center justify-center h-48 text-muted-foreground">
               <Loader2 className="h-8 w-8 animate-spin mb-4" />
               <p>Your AI assistant is thinking...</p>
             </div>
           )}
           {aiResponse && (
-            <div className="space-y-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-lg flex items-center gap-2"><CheckSquare />Suggested Sub-tasks</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <ul className="list-disc pl-5 space-y-2 text-sm">
-                            {aiResponse.subTasks.map((task, index) => <li key={index}>{task}</li>)}
-                        </ul>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader>
-                         <CardTitle className="text-lg flex items-center gap-2"><Lightbulb />Research Keywords</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="flex flex-wrap gap-2">
-                            {aiResponse.suggestedResources.map((resource, index) => (
-                                <Badge key={index} variant="secondary">{resource}</Badge>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
-                 <Card>
-                    <CardHeader>
-                        <CardTitle className="text-lg flex items-center gap-2"><Timer />Estimated Time</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="font-semibold text-lg">{aiResponse.timeEstimate}</p>
-                    </CardContent>
-                </Card>
-            </div>
+            <ScrollArea className="h-[400px] pr-4">
+                <div className="space-y-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-lg flex items-center gap-2"><CheckSquare />Suggested Sub-tasks</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <ul className="list-disc pl-5 space-y-2 text-sm">
+                                {aiResponse.subTasks.map((task, index) => <li key={index}>{task}</li>)}
+                            </ul>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-lg flex items-center gap-2"><Lightbulb />Research Keywords</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="flex flex-wrap gap-2">
+                                {aiResponse.suggestedResources.map((resource, index) => (
+                                    <Badge key={index} variant="secondary">{resource}</Badge>
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-lg flex items-center gap-2"><Timer />Estimated Time</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="font-semibold text-lg">{aiResponse.timeEstimate}</p>
+                        </CardContent>
+                    </Card>
+                </div>
+            </ScrollArea>
           )}
         </div>
+        {aiResponse && (
+            <DialogFooter>
+                 <Button variant="outline" onClick={handleGetAssistance} disabled={isLoading}>
+                    {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+                    Regenerate
+                </Button>
+                 <DialogClose asChild>
+                    <Button type="button" variant="secondary">Close</Button>
+                </DialogClose>
+            </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   );
