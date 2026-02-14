@@ -14,7 +14,7 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { useAuth, useFirestore } from '@/firebase';
+import { useAuth, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -70,7 +70,11 @@ export function AuthPage() {
   });
 
   React.useEffect(() => {
-    form.reset();
+    form.reset({
+      name: '',
+      email: '',
+      password: '',
+    });
   }, [isLogin, form]);
 
   const handleNotificationsAndRedirect = async () => {
@@ -102,14 +106,28 @@ export function AuthPage() {
 
     setIsLoading(true);
 
-    try {
-      if (isLogin) {
+    if (isLogin) {
+      try {
         await signInWithEmailAndPassword(
           auth,
           values.email,
           values.password
         );
-      } else {
+        await handleNotificationsAndRedirect();
+      } catch (error: any) {
+         toast({
+          title: 'Authentication Error',
+          description:
+            error.code === 'auth/invalid-credential'
+              ? 'Invalid email or password.'
+              : 'An error occurred. Please try again.',
+          variant: 'destructive',
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    } else { // Handle Sign Up
+      try {
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           values.email,
@@ -117,24 +135,43 @@ export function AuthPage() {
         );
         const user = userCredential.user;
         await updateProfile(user, { displayName: values.name });
-        await setDoc(doc(firestore, 'users', user.uid), {
+
+        const userDocRef = doc(firestore, 'users', user.uid);
+        const userProfileData = {
           displayName: values.name,
           email: user.email,
           photoURL: user.photoURL,
+        };
+
+        // Non-blocking write with specific error handling
+        setDoc(userDocRef, userProfileData)
+          .then(async () => {
+            await handleNotificationsAndRedirect();
+          })
+          .catch(async (serverError) => {
+            const permissionError = new FirestorePermissionError({
+              path: userDocRef.path,
+              operation: 'create',
+              requestResourceData: userProfileData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
+            toast({
+              title: 'Account Creation Error',
+              description: 'Could not save user profile. Please check permissions and try again.',
+              variant: 'destructive',
+            });
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+      } catch (error: any) { // Catches Auth errors for sign up
+        toast({
+          title: 'Authentication Error',
+          description: 'An error occurred during sign up. Please try again.',
+          variant: 'destructive',
         });
+        setIsLoading(false);
       }
-      await handleNotificationsAndRedirect();
-    } catch (error: any) {
-      toast({
-        title: 'Authentication Error',
-        description:
-          error.code === 'auth/invalid-credential'
-            ? 'Invalid email or password.'
-            : 'An error occurred. Please try again.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -145,23 +182,41 @@ export function AuthPage() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      await setDoc(
-        doc(firestore, 'users', user.uid),
-        {
-          displayName: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-        },
-        { merge: true }
-      );
-      await handleNotificationsAndRedirect();
+      
+      const userDocRef = doc(firestore, 'users', user.uid);
+      const userProfileData = {
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+      };
+
+      setDoc(userDocRef, userProfileData, { merge: true })
+        .then(async () => {
+          await handleNotificationsAndRedirect();
+        })
+        .catch(async (serverError) => {
+          const permissionError = new FirestorePermissionError({
+            path: userDocRef.path,
+            operation: 'update', // or 'create' if new
+            requestResourceData: userProfileData,
+          });
+          errorEmitter.emit('permission-error', permissionError);
+          toast({
+            title: 'Google Sign-In Error',
+            description: 'Could not save user profile with Google. Please try again.',
+            variant: 'destructive',
+          });
+        })
+        .finally(() => {
+          setIsGoogleLoading(false);
+        });
+
     } catch (error: any) {
       toast({
         title: 'Google Sign-In Error',
         description: 'Could not sign in with Google. Please try again.',
         variant: 'destructive',
       });
-    } finally {
       setIsGoogleLoading(false);
     }
   };
@@ -229,15 +284,15 @@ export function AuthPage() {
                     name="email"
                     render={({ field }) => (
                       <FormItem className="text-left">
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="email"
-                            placeholder="student@university.edu"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="email"
+                              placeholder="student@university.edu"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
                       </FormItem>
                     )}
                   />

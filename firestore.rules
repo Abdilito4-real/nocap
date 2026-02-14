@@ -1,0 +1,17 @@
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      // Anyone can view a user's public profile.
+      allow read: if true;
+      
+      // Only the authenticated user can create their own profile document.
+      allow create: if request.auth.uid == userId;
+
+      // Only the authenticated user can update their own profile document.
+      allow update: if request.auth.uid == userId;
+    }
+  }
+}
