@@ -1,13 +1,10 @@
 'use client';
 
 import { OnboardingCarousel } from '@/components/OnboardingCarousel';
-import { DesktopOnboarding } from '@/components/DesktopOnboarding';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function OnboardingPage() {
-    const isMobile = useIsMobile();
     const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
@@ -22,5 +19,5 @@ export default function OnboardingPage() {
         );
     }
 
-    return isMobile ? <OnboardingCarousel /> : <DesktopOnboarding />;
+    return <OnboardingCarousel />;
 }
