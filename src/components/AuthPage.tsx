@@ -22,7 +22,7 @@ export function AuthPage() {
           <h1 className="text-3xl font-bold text-foreground">NoCap</h1>
         </div>
         <p className="text-muted-foreground mb-8 max-w-sm">
-          The ultimate student hub. Connect, track, and discover. All in one place.
+          Your campus. Unfiltered. All in one.
         </p>
 
         <Card className="w-full max-w-sm">
