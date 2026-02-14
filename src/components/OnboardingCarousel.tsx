@@ -70,7 +70,7 @@ export function OnboardingCarousel() {
       </div>
 
       {/* Floating Icons */}
-      <div className="absolute inset-0 z-20 pointer-events-none">
+      <div className="hidden md:block absolute inset-0 z-20 pointer-events-none">
         {floatingIcons.map((item, index) => (
             <div
                 key={index}
