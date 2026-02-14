@@ -98,7 +98,7 @@ export function OnboardingCarousel() {
             <div className="w-full flex flex-col items-center gap-2">
               {isLastSlide && count > 0 ? (
                   <Button asChild className="w-full" size="lg">
-                      <Link href="/auth">Get It</Link>
+                      <Link href="/auth">Get Started</Link>
                   </Button>
               ) : (
                   <Button onClick={handleNext} className="w-full" size="lg">
