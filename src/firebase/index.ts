@@ -19,10 +19,13 @@ export function initializeFirebase(): {
       console.warn(
         "Firebase configuration is incomplete. Missing environment variables:",
         missingKeys.join(", "),
-        "\nTo fix this, please add these keys to your .env file or Vercel dashboard."
+        "\nTo fix this, please add these keys to your .env.local file or Vercel dashboard (Settings > Environment Variables)."
       );
     } else {
-      console.warn("Firebase config not found. The app will run without Firebase features.");
+      console.warn(
+        "Firebase configuration not found. The app will run without Firebase features (like Auth/Firestore).\n" +
+        "Please ensure all NEXT_PUBLIC_FIREBASE_* environment variables are set in your Vercel project settings."
+      );
     }
     return null;
   }

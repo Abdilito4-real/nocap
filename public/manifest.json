@@ -30,22 +30,48 @@
   ],
   "screenshots": [
     {
-      "src": "/screenshots/desktop.png",
+      "src": "/screenshots/feed-desktop.png",
       "sizes": "1280x800",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Feed Desktop"
+      "label": "Feed"
     },
     {
-      "src": "/screenshots/mobile.png",
+      "src": "/screenshots/feed-mobile.png",
       "sizes": "375x667",
       "type": "image/png",
-      "label": "Feed Mobile"
+      "label": "Feed"
+    },
+    {
+      "src": "/screenshots/onboarding-desktop.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Onboarding"
+    },
+    {
+      "src": "/screenshots/onboarding-mobile.png",
+      "sizes": "375x667",
+      "type": "image/png",
+      "label": "Onboarding"
+    },
+    {
+      "src": "/screenshots/auth-desktop.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Login"
+    },
+    {
+      "src": "/screenshots/auth-mobile.png",
+      "sizes": "375x667",
+      "type": "image/png",
+      "label": "Login"
     }
   ],
   "theme_color": "#2563eb",
   "background_color": "#ffffff",
-  "start_url": "/feed",
+  "start_url": "/",
   "display": "standalone",
   "scope": "/"
 }
