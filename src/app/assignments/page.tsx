@@ -104,7 +104,7 @@ export default function AssignmentsPage() {
           <CardContent className="p-4 pt-0 flex-grow">
              <div className="flex justify-between items-center">
                 <p className="text-sm text-muted-foreground">
-                  {assignment.completed ? `Completed on ${format(new Date(assignment.dueDate), "EEE, MMM d")}` : `Due on ${format(new Date(assignment.dueDate), "EEE, MMM d")}`}
+                  {assignment.completed ? `Completed on ${isClient ? format(new Date(assignment.dueDate), "EEE, MMM d") : ''}` : `Due on ${isClient ? format(new Date(assignment.dueDate), "EEE, MMM d") : ''}`}
                 </p>
                 <div className="flex items-center space-x-2">
                     <Checkbox
@@ -140,7 +140,7 @@ export default function AssignmentsPage() {
 
   return (
     <AppLayout>
-      <div className="p-4 md:p-8">
+      <div className="h-full overflow-y-auto p-4 md:p-8">
         <header className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold">Assignment Tracker</h1>

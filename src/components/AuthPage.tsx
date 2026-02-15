@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import {
   createUserWithEmailAndPassword,
+  getAdditionalUserInfo,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -77,20 +78,21 @@ export function AuthPage() {
     });
   }, [isLogin, form]);
 
-  const handleNotificationsAndRedirect = async () => {
+  const handleNotificationsAndRedirect = () => {
+    // For email sign-up, attempt to request notification permission, but don't block redirection.
     if (!isLogin && 'Notification' in window && Notification.permission !== 'denied') {
-      try {
-        const permission = await Notification.requestPermission();
-        if (permission === 'granted') {
-          new Notification('Welcome to NoCap', {
-            body: 'Your campus just got real. Start scrolling, posting, and connecting.',
-            icon: '/icons/icon-192x192.png',
-          });
-        }
-      } catch (error) {
-        console.error('Error requesting notification permission:', error);
-      }
+       Notification.requestPermission().then(permission => {
+         if (permission === 'granted') {
+           new Notification('Welcome to NoCap', {
+             body: 'Your campus just got real. Start scrolling, posting, and connecting.',
+             icon: '/icons/icon-192x192.png',
+           });
+         }
+       }).catch(error => {
+            console.error('Error requesting notification permission:', error);
+       });
     }
+    // Redirect immediately
     router.push('/feed');
   };
 
@@ -147,7 +149,7 @@ export function AuthPage() {
             return; 
         }
       }
-      await handleNotificationsAndRedirect();
+      handleNotificationsAndRedirect();
     } catch (error: any) {
       let description = error.message || 'An unknown error occurred. Please try again.';
       if (error.code === 'auth/configuration-not-found' || error.code === 'auth/operation-not-allowed') {
@@ -170,6 +172,7 @@ export function AuthPage() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+      const additionalInfo = getAdditionalUserInfo(result);
       
       const userDocRef = doc(firestore, 'users', user.uid);
       const userProfileData = {
@@ -195,7 +198,21 @@ export function AuthPage() {
           return;
       }
         
-      await handleNotificationsAndRedirect();
+      // Non-blocking notification request for new Google users
+      if (additionalInfo?.isNewUser && 'Notification' in window && Notification.permission !== 'denied') {
+        Notification.requestPermission().then(permission => {
+          if (permission === 'granted') {
+            new Notification('Welcome to NoCap', {
+              body: 'Your campus just got real. Start scrolling, posting, and connecting.',
+              icon: '/icons/icon-192x192.png',
+            });
+          }
+        }).catch(error => {
+          console.error('Error requesting notification permission:', error);
+        });
+      }
+
+      router.push('/feed');
 
     } catch (error: any) {
       let description = error.message || 'Could not sign in with Google. Please try again.';

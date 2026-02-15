@@ -10,7 +10,7 @@ type VideoPostProps = {
 
 export function VideoPost({ post }: VideoPostProps) {
   return (
-    <div className="h-screen w-full flex-shrink-0 snap-start flex items-center justify-center bg-black relative">
+    <div className="h-full w-full flex-shrink-0 snap-start flex items-center justify-center bg-black relative">
       <div className="relative w-full h-full">
         {post.videoUrl && (
           <Image
