@@ -106,29 +106,14 @@ export function AuthPage() {
 
     setIsLoading(true);
 
-    if (isLogin) {
-      try {
+    try {
+      if (isLogin) {
         await signInWithEmailAndPassword(
           auth,
           values.email,
           values.password
         );
-        await handleNotificationsAndRedirect();
-      } catch (error: any) {
-         let description = error.message || 'An unknown error occurred. Please try again.';
-         if (error.code === 'auth/configuration-not-found') {
-           description = 'Authentication provider is not configured. Please make sure you have enabled Email/Password sign-in method in your Firebase project console.';
-         }
-         toast({
-          title: 'Authentication Error',
-          description: description,
-          variant: 'destructive',
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    } else { // Handle Sign Up
-      try {
+      } else { // Handle Sign Up
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           values.email,
@@ -143,13 +128,10 @@ export function AuthPage() {
           email: user.email,
           photoURL: user.photoURL,
         };
-
-        // Non-blocking write with specific error handling
-        setDoc(userDocRef, userProfileData)
-          .then(async () => {
-            await handleNotificationsAndRedirect();
-          })
-          .catch(async (serverError) => {
+        
+        try {
+          await setDoc(userDocRef, userProfileData);
+        } catch (serverError) {
             const permissionError = new FirestorePermissionError({
               path: userDocRef.path,
               operation: 'create',
@@ -161,22 +143,23 @@ export function AuthPage() {
               description: 'Could not save user profile. Please check permissions and try again.',
               variant: 'destructive',
             });
-          })
-          .finally(() => {
-            setIsLoading(false);
-          });
-      } catch (error: any) { // Catches Auth errors for sign up
-        let description = error.message || 'An unknown error occurred during sign up. Please try again.';
-        if (error.code === 'auth/configuration-not-found') {
-           description = 'Authentication provider is not configured. Please make sure you have enabled Email/Password sign-in method in your Firebase project console.';
-         }
-        toast({
-          title: 'Authentication Error',
-          description: description,
-          variant: 'destructive',
-        });
-        setIsLoading(false);
+            // Don't redirect if profile creation fails
+            return; 
+        }
       }
+      await handleNotificationsAndRedirect();
+    } catch (error: any) {
+      let description = error.message || 'An unknown error occurred. Please try again.';
+      if (error.code === 'auth/configuration-not-found' || error.code === 'auth/operation-not-allowed') {
+        description = 'Authentication provider is not configured. Please make sure you have enabled Email/Password sign-in method in your Firebase project console.';
+      }
+      toast({
+        title: 'Authentication Error',
+        description: description,
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -195,11 +178,9 @@ export function AuthPage() {
         photoURL: user.photoURL,
       };
 
-      setDoc(userDocRef, userProfileData, { merge: true })
-        .then(async () => {
-          await handleNotificationsAndRedirect();
-        })
-        .catch(async (serverError) => {
+      try {
+          await setDoc(userDocRef, userProfileData, { merge: true });
+      } catch (serverError) {
           const permissionError = new FirestorePermissionError({
             path: userDocRef.path,
             operation: 'update', // or 'create' if new
@@ -211,24 +192,28 @@ export function AuthPage() {
             description: 'Could not save user profile with Google. Please try again.',
             variant: 'destructive',
           });
-        })
-        .finally(() => {
-          setIsGoogleLoading(false);
-        });
+          return;
+      }
+        
+      await handleNotificationsAndRedirect();
 
     } catch (error: any) {
       let description = error.message || 'Could not sign in with Google. Please try again.';
       if (error.code === 'auth/unauthorized-domain') {
         description = `This app's domain (${window.location.hostname}) is not authorized for Google Sign-In. Go to the Firebase console > Authentication > Settings > Authorized domains and add it.`;
-      } else if (error.code === 'auth/configuration-not-found') {
+      } else if (error.code === 'auth/configuration-not-found' || error.code === 'auth/operation-not-allowed') {
         description = 'Authentication provider is not configured. Please make sure you have enabled Google sign-in method in your Firebase project console.';
       }
-      toast({
-        title: 'Google Sign-In Error',
-        description: description,
-        variant: 'destructive',
-      });
-      setIsGoogleLoading(false);
+      // We don't want to show a big error if the user simply closes the popup.
+      if (error.code !== 'auth/popup-closed-by-user') {
+          toast({
+            title: 'Google Sign-In Error',
+            description: description,
+            variant: 'destructive',
+          });
+      }
+    } finally {
+        setIsGoogleLoading(false);
     }
   };
 
@@ -375,5 +360,3 @@ export function AuthPage() {
     </div>
   );
 }
-
-    
