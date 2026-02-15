@@ -10,7 +10,7 @@ type VideoPostProps = {
 
 export function VideoPost({ post }: VideoPostProps) {
   return (
-    <div className="h-full w-full flex-shrink-0 snap-start flex items-center justify-center bg-black relative">
+    <div className="h-screen w-full flex-shrink-0 snap-start flex items-center justify-center bg-black relative">
       <div className="relative w-full h-full">
         {post.videoUrl && (
           <Image
@@ -25,7 +25,7 @@ export function VideoPost({ post }: VideoPostProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
       </div>
 
-      <div className="absolute bottom-16 md:bottom-4 left-4 right-4 text-white">
+      <div className="absolute bottom-16 md:bottom-20 left-4 right-4 text-white">
         <div className="flex items-center gap-2 mb-2">
           <Avatar className="h-10 w-10 border-2 border-primary">
             {post.user.avatarUrl && <AvatarImage src={post.user.avatarUrl} alt={post.user.name} data-ai-hint={post.user.avatarHint} />}
@@ -36,7 +36,7 @@ export function VideoPost({ post }: VideoPostProps) {
         <p className="text-sm">{post.caption}</p>
       </div>
 
-      <div className="absolute right-4 bottom-20 md:bottom-24 flex flex-col gap-4 text-white">
+      <div className="absolute right-4 bottom-24 md:bottom-28 flex flex-col gap-4 text-white">
         <Button variant="ghost" size="icon" className="flex flex-col h-auto gap-1 text-white hover:text-white hover:bg-white/10">
           <Heart className="h-8 w-8" />
           <span className="text-xs">{post.likes}</span>
