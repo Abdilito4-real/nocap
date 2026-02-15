@@ -218,7 +218,9 @@ export function AuthPage() {
 
     } catch (error: any) {
       let description = error.message || 'Could not sign in with Google. Please try again.';
-      if (error.code === 'auth/configuration-not-found') {
+      if (error.code === 'auth/unauthorized-domain') {
+        description = `This app's domain (${window.location.hostname}) is not authorized for Google Sign-In. Go to the Firebase console > Authentication > Settings > Authorized domains and add it.`;
+      } else if (error.code === 'auth/configuration-not-found') {
         description = 'Authentication provider is not configured. Please make sure you have enabled Google sign-in method in your Firebase project console.';
       }
       toast({
@@ -373,3 +375,5 @@ export function AuthPage() {
     </div>
   );
 }
+
+    
