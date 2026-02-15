@@ -11,7 +11,19 @@ export function initializeFirebase(): {
 } | null {
   // Prevent initialization if the API key is missing.
   if (!firebaseConfig.apiKey) {
-    console.warn("Firebase config not found. The app will run without Firebase features. To enable them, please add your Firebase project configuration to your .env file.");
+    if (process.env.NODE_ENV === 'development') {
+      const missingKeys = Object.entries(firebaseConfig)
+        .filter(([_, value]) => !value)
+        .map(([key]) => `NEXT_PUBLIC_FIREBASE_${key.replace(/[A-Z]/g, letter => `_${letter.toUpperCase()}`).toUpperCase()}`);
+
+      console.warn(
+        "Firebase configuration is incomplete. Missing environment variables:",
+        missingKeys.join(", "),
+        "\nTo fix this, please add these keys to your .env file or Vercel dashboard."
+      );
+    } else {
+      console.warn("Firebase config not found. The app will run without Firebase features.");
+    }
     return null;
   }
 
