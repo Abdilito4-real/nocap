@@ -1,11 +1,13 @@
-const CACHE_NAME = 'nocap-cache-v3';
+const CACHE_NAME = 'nocap-cache-v4';
 
 const urlsToCache = [
   '/',
   '/manifest.json',
   '/icon.png',
   '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png'
+  '/icons/icon-512x512.png',
+  '/screenshots/desktop.png',
+  '/screenshots/mobile.png'
 ];
 
 self.addEventListener('install', (event) => {

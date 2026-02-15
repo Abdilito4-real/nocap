@@ -4,7 +4,6 @@ import * as React from 'react';
 import { usePathname } from 'next/navigation';
 import { SideNav } from '@/components/SideNav';
 import { BottomNav } from '@/components/BottomNav';
-import { PwaInstallBanner } from '@/components/PwaInstallBanner';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 
@@ -39,7 +38,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen">
       {!isMobile && <SideNav />}
       <main className={cn('flex-1', { 'pb-16 md:pb-0': !isFeedPage })}>{children}</main>
-      <PwaInstallBanner />
       {isMobile && <BottomNav />}
     </div>
   );
