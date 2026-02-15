@@ -18,6 +18,19 @@
             "type": "string",
             "format": "uri",
             "description": "URL of the user's profile picture."
+        },
+        "currentStreak": {
+          "type": "number",
+          "description": "The user's current daily check-in streak."
+        },
+        "longestStreak": {
+          "type": "number",
+          "description": "The user's longest daily check-in streak."
+        },
+        "lastCheckInDate": {
+          "type": "string",
+          "format": "date",
+          "description": "The last date the user checked in, in YYYY-MM-DD format."
         }
       },
       "required": ["displayName", "email"]

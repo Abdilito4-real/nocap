@@ -86,8 +86,7 @@ export function AuthPage() {
 
   const handleNotificationsAndRedirect = () => {
     // Non-blocking notification request
-    const isNewUser = !isLogin;
-    if (isNewUser && 'Notification' in window && Notification.permission !== 'denied') {
+    if ('Notification' in window && Notification.permission !== 'denied') {
       Notification.requestPermission().catch(error => {
         console.error('Error requesting notification permission:', error);
       });
@@ -129,6 +128,9 @@ export function AuthPage() {
           displayName: values.name,
           email: user.email,
           photoURL: user.photoURL,
+          currentStreak: 0,
+          longestStreak: 0,
+          lastCheckInDate: null,
         };
         
         // This setDoc operation should not be awaited if we want to redirect immediately
@@ -160,42 +162,35 @@ export function AuthPage() {
   };
   
   const handleGoogleSignIn = async () => {
-    if (!auth || !firestore) return;
+    if (!auth || !firestore) {
+      toast({
+        title: 'Error',
+        description: 'Firebase not initialized. Please try again later.',
+        variant: 'destructive',
+      });
+      return;
+    }
     setIsGoogleLoading(true);
     const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      const additionalInfo = getAdditionalUserInfo(result);
-      
-      const userDocRef = doc(firestore, 'users', user.uid);
-      const userProfileData = {
-        displayName: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-      };
-  
-      // The profile update is important, but we shouldn't block navigation for it.
-      // We'll let this run in the background.
-      setDoc(userDocRef, userProfileData, { merge: true }).catch(serverError => {
-          const permissionError = new FirestorePermissionError({
-            path: userDocRef.path,
-            operation: 'update',
-            requestResourceData: userProfileData,
-          });
-          errorEmitter.emit('permission-error', permissionError);
-           // Log the error but don't block the user flow.
-          console.error("Failed to save user profile with Google, but proceeding with login.");
-      });
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        const additionalInfo = getAdditionalUserInfo(result);
         
-      // Non-blocking notification request for new Google users
-      if (additionalInfo?.isNewUser && 'Notification' in window && Notification.permission !== 'denied') {
-        Notification.requestPermission().catch(error => {
-          console.error('Error requesting notification permission:', error);
-        });
-      }
-  
-      router.push('/feed');
+        if (additionalInfo?.isNewUser) {
+            const userDocRef = doc(firestore, 'users', user.uid);
+            const userProfileData = {
+                displayName: user.displayName,
+                email: user.email,
+                photoURL: user.photoURL,
+                currentStreak: 0,
+                longestStreak: 0,
+                lastCheckInDate: null,
+            };
+            await setDoc(userDocRef, userProfileData, { merge: true });
+        }
+        
+        handleNotificationsAndRedirect();
   
     } catch (error: any) {
       let description = error.message || 'Could not sign in with Google. Please try again.';
@@ -221,7 +216,7 @@ export function AuthPage() {
       <div className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-2">
         <div className="hidden lg:flex flex-col bg-muted p-10 text-foreground">
           <div className="flex items-center gap-3">
-            <Image src="/icons/icon-192x192.png" alt="NoCap Logo" width={40} height={40} />
+            <Image src="/icon.png" alt="NoCap Logo" width={40} height={40} />
           </div>
           <div className="m-auto max-w-md space-y-8">
               <h1 className="text-4xl font-bold tracking-tight">Your campus life, organized.</h1>
@@ -293,7 +288,7 @@ export function AuthPage() {
     <div className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-2">
       <div className="hidden lg:flex flex-col bg-muted p-10 text-foreground">
         <div className="flex items-center gap-3">
-          <Image src="/icons/icon-192x192.png" alt="NoCap Logo" width={40} height={40} />
+          <Image src="/icon.png" alt="NoCap Logo" width={40} height={40} />
         </div>
         <div className="m-auto max-w-md space-y-8">
             <h1 className="text-4xl font-bold tracking-tight">Your campus life, organized.</h1>

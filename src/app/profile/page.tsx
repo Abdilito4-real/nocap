@@ -9,13 +9,16 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { userProfile as staticUserProfile } from '@/lib/data';
 import Image from 'next/image';
-import { Eye } from 'lucide-react';
+import { Eye, Flame, Trophy } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { useUser, useDoc } from '@/firebase';
+import { useUser, useDoc, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
+import { doc, setDoc } from 'firebase/firestore';
+import { format, subDays } from 'date-fns';
 
 export default function ProfilePage() {
   const { user, loading: userLoading } = useUser();
+  const firestore = useFirestore();
   const { data: userProfile, loading: profileLoading } = useDoc(user ? `users/${user.uid}` : null);
   const router = useRouter();
 
@@ -24,6 +27,54 @@ export default function ProfilePage() {
       router.replace('/auth');
     }
   }, [user, userLoading, router]);
+
+  useEffect(() => {
+    if (!firestore || !user || !userProfile || profileLoading) {
+      return;
+    }
+
+    const todayStr = format(new Date(), 'yyyy-MM-dd');
+    const yesterdayStr = format(subDays(new Date(), 1), 'yyyy-MM-dd');
+    const lastCheckIn = userProfile.lastCheckInDate;
+
+    // Already checked in today
+    if (lastCheckIn === todayStr) {
+      return;
+    }
+
+    const userDocRef = doc(firestore, 'users', user.uid);
+    let newCurrentStreak = userProfile.currentStreak || 0;
+    let newLongestStreak = userProfile.longestStreak || 0;
+
+    if (lastCheckIn === yesterdayStr) {
+      // User checked in yesterday, continue the streak
+      newCurrentStreak += 1;
+    } else {
+      // User missed a day or it's their first time, reset streak
+      newCurrentStreak = 1;
+    }
+
+    if (newCurrentStreak > newLongestStreak) {
+      newLongestStreak = newCurrentStreak;
+    }
+    
+    const updatedProfile = {
+      lastCheckInDate: todayStr,
+      currentStreak: newCurrentStreak,
+      longestStreak: newLongestStreak,
+    };
+
+    setDoc(userDocRef, updatedProfile, { merge: true }).catch(serverError => {
+      const permissionError = new FirestorePermissionError({
+        path: userDocRef.path,
+        operation: 'update',
+        requestResourceData: updatedProfile,
+      });
+      errorEmitter.emit('permission-error', permissionError);
+      console.error("Failed to update streak data.");
+    });
+
+  }, [user, userProfile, firestore, profileLoading]);
 
   const isLoading = userLoading || profileLoading;
 
@@ -43,6 +94,10 @@ export default function ProfilePage() {
               <Button variant="outline" size="sm" className="mt-4 invisible">Edit Profile</Button>
             </div>
           </header>
+           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+              <Skeleton className="h-24 w-full" />
+              <Skeleton className="h-24 w-full" />
+           </div>
         </div>
       </AppLayout>
     );
@@ -68,6 +123,24 @@ export default function ProfilePage() {
             <Button variant="outline" size="sm" className="mt-4">Edit Profile</Button>
           </div>
         </header>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+          <Card className="p-4 flex items-center gap-4 bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800">
+              <Flame className="h-10 w-10 text-amber-500" />
+              <div>
+                  <div className="text-3xl font-bold">{userProfile?.currentStreak ?? 0}</div>
+                  <p className="text-muted-foreground">Day Streak</p>
+              </div>
+          </Card>
+          <Card className="p-4 flex items-center gap-4 bg-slate-50 dark:bg-slate-900/20 border-slate-200 dark:border-slate-800">
+              <Trophy className="h-10 w-10 text-slate-500" />
+              <div>
+                  <div className="text-3xl font-bold">{userProfile?.longestStreak ?? 0}</div>
+                  <p className="text-muted-foreground">Longest Streak</p>
+              </div>
+          </Card>
+        </div>
+
 
         <Tabs defaultValue="videos" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
