@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -38,6 +38,7 @@ import { Icons } from '@/components/Icons';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
@@ -53,6 +54,7 @@ const signupSchema = z.object({
 });
 
 export function AuthPage() {
+  const [isClient, setIsClient] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
@@ -60,6 +62,10 @@ export function AuthPage() {
   const { toast } = useToast();
   const auth = useAuth();
   const firestore = useFirestore();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(isLogin ? loginSchema : signupSchema),
@@ -79,23 +85,17 @@ export function AuthPage() {
   }, [isLogin, form]);
 
   const handleNotificationsAndRedirect = () => {
-    // For email sign-up, attempt to request notification permission, but don't block redirection.
-    if (!isLogin && 'Notification' in window && Notification.permission !== 'denied') {
-       Notification.requestPermission().then(permission => {
-         if (permission === 'granted') {
-           new Notification('Welcome to NoCap', {
-             body: 'Your campus just got real. Start scrolling, posting, and connecting.',
-             icon: '/icons/icon-192x192.png',
-           });
-         }
-       }).catch(error => {
-            console.error('Error requesting notification permission:', error);
-       });
+    // Non-blocking notification request
+    const isNewUser = !isLogin;
+    if (isNewUser && 'Notification' in window && Notification.permission !== 'denied') {
+      Notification.requestPermission().catch(error => {
+        console.error('Error requesting notification permission:', error);
+      });
     }
     // Redirect immediately
     router.push('/feed');
   };
-
+  
   const onSubmit = async (values: z.infer<typeof signupSchema>) => {
     if (!auth || !firestore) {
       toast({
@@ -105,9 +105,9 @@ export function AuthPage() {
       });
       return;
     }
-
+  
     setIsLoading(true);
-
+  
     try {
       if (isLogin) {
         await signInWithEmailAndPassword(
@@ -123,7 +123,7 @@ export function AuthPage() {
         );
         const user = userCredential.user;
         await updateProfile(user, { displayName: values.name });
-
+  
         const userDocRef = doc(firestore, 'users', user.uid);
         const userProfileData = {
           displayName: values.name,
@@ -131,23 +131,17 @@ export function AuthPage() {
           photoURL: user.photoURL,
         };
         
-        try {
-          await setDoc(userDocRef, userProfileData);
-        } catch (serverError) {
+        // This setDoc operation should not be awaited if we want to redirect immediately
+        setDoc(userDocRef, userProfileData).catch(serverError => {
             const permissionError = new FirestorePermissionError({
               path: userDocRef.path,
               operation: 'create',
               requestResourceData: userProfileData,
             });
             errorEmitter.emit('permission-error', permissionError);
-            toast({
-              title: 'Account Creation Error',
-              description: 'Could not save user profile. Please check permissions and try again.',
-              variant: 'destructive',
-            });
-            // Don't redirect if profile creation fails
-            return; 
-        }
+            // Log the error but don't block the user flow.
+            console.error("Failed to create user profile, but proceeding with login.");
+        });
       }
       handleNotificationsAndRedirect();
     } catch (error: any) {
@@ -164,7 +158,7 @@ export function AuthPage() {
       setIsLoading(false);
     }
   };
-
+  
   const handleGoogleSignIn = async () => {
     if (!auth || !firestore) return;
     setIsGoogleLoading(true);
@@ -180,40 +174,29 @@ export function AuthPage() {
         email: user.email,
         photoURL: user.photoURL,
       };
-
-      try {
-          await setDoc(userDocRef, userProfileData, { merge: true });
-      } catch (serverError) {
+  
+      // The profile update is important, but we shouldn't block navigation for it.
+      // We'll let this run in the background.
+      setDoc(userDocRef, userProfileData, { merge: true }).catch(serverError => {
           const permissionError = new FirestorePermissionError({
             path: userDocRef.path,
-            operation: 'update', // or 'create' if new
+            operation: 'update',
             requestResourceData: userProfileData,
           });
           errorEmitter.emit('permission-error', permissionError);
-          toast({
-            title: 'Google Sign-In Error',
-            description: 'Could not save user profile with Google. Please try again.',
-            variant: 'destructive',
-          });
-          return;
-      }
+           // Log the error but don't block the user flow.
+          console.error("Failed to save user profile with Google, but proceeding with login.");
+      });
         
       // Non-blocking notification request for new Google users
       if (additionalInfo?.isNewUser && 'Notification' in window && Notification.permission !== 'denied') {
-        Notification.requestPermission().then(permission => {
-          if (permission === 'granted') {
-            new Notification('Welcome to NoCap', {
-              body: 'Your campus just got real. Start scrolling, posting, and connecting.',
-              icon: '/icons/icon-192x192.png',
-            });
-          }
-        }).catch(error => {
+        Notification.requestPermission().catch(error => {
           console.error('Error requesting notification permission:', error);
         });
       }
-
+  
       router.push('/feed');
-
+  
     } catch (error: any) {
       let description = error.message || 'Could not sign in with Google. Please try again.';
       if (error.code === 'auth/unauthorized-domain') {
@@ -221,7 +204,6 @@ export function AuthPage() {
       } else if (error.code === 'auth/configuration-not-found' || error.code === 'auth/operation-not-allowed') {
         description = 'Authentication provider is not configured. Please make sure you have enabled Google sign-in method in your Firebase project console.';
       }
-      // We don't want to show a big error if the user simply closes the popup.
       if (error.code !== 'auth/popup-closed-by-user') {
           toast({
             title: 'Google Sign-In Error',
@@ -233,6 +215,79 @@ export function AuthPage() {
         setIsGoogleLoading(false);
     }
   };
+
+  if (!isClient) {
+    return (
+      <div className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-2">
+        <div className="hidden lg:flex flex-col bg-muted p-10 text-foreground">
+          <div className="flex items-center gap-3">
+            <Image src="/icons/icon-192x192.png" alt="NoCap Logo" width={40} height={40} />
+          </div>
+          <div className="m-auto max-w-md space-y-8">
+              <h1 className="text-4xl font-bold tracking-tight">Your campus life, organized.</h1>
+              <p className="text-muted-foreground">From assignments and job hunts to late-night confessions and viral campus clips, NoCap brings it all together.</p>
+          </div>
+          <div className="space-y-6">
+              <blockquote className="border-l-2 pl-6 italic">
+                  "This is the one app every student needs. It's made my university experience so much more connected and manageable."
+              </blockquote>
+              <div className="text-sm">
+                  <p className="font-semibold">Jessica P.</p>
+                  <p className="text-muted-foreground">Computer Science, State University</p>
+              </div>
+               <div className="mt-8">
+                  <p className="text-sm font-semibold text-muted-foreground mb-4">JOINING 10,000+ STUDENTS FROM</p>
+                   <div className="flex gap-6 items-center text-muted-foreground font-mono font-semibold">
+                       <span>State University</span>
+                       <span>City College</span>
+                       <span>Tech Institute</span>
+                   </div>
+               </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-center p-8">
+          <div className="mx-auto flex w-full flex-col justify-center space-y-6 max-w-sm">
+            <Card className="w-full">
+              <CardHeader className="text-center space-y-2">
+                <Skeleton className="h-7 w-3/4 mx-auto" />
+                <Skeleton className="h-5 w-full mx-auto" />
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <div className="grid gap-2">
+                  <Skeleton className="h-4 w-12" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+                <div className="grid gap-2">
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+              </CardContent>
+              <CardFooter className="flex flex-col gap-4">
+                <Skeleton className="h-10 w-full" />
+              </CardFooter>
+              <div className="relative mb-4 px-6">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-card px-2 text-muted-foreground">
+                    Or continue with
+                  </span>
+                </div>
+              </div>
+              <div className="px-6 pb-6">
+                <Skeleton className="h-10 w-full" />
+              </div>
+            </Card>
+            <div className="flex justify-center">
+              <Skeleton className="h-5 w-48" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-2">
