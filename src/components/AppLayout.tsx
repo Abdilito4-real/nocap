@@ -14,12 +14,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     if (window.localStorage.getItem('showWelcomeNotification') === 'true') {
-      if ('Notification' in window && Notification.permission !== 'denied') {
+      if ('Notification' in window && 'serviceWorker' in navigator && Notification.permission !== 'denied') {
         Notification.requestPermission().then((permission) => {
           if (permission === 'granted') {
-            new Notification('Welcome to NoCap!', {
-              body: "You're all set up. Let's explore!",
-              icon: '/icon.png',
+            navigator.serviceWorker.ready.then((registration) => {
+              registration.showNotification('Welcome to NoCap!', {
+                body: "You're all set up. Let's explore!",
+                icon: '/icon.png',
+              });
             });
           }
           // Always remove the flag after the permission prompt is handled
