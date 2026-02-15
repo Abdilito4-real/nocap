@@ -36,7 +36,7 @@ export default function ConfessionsPage() {
                 <p className="text-foreground mb-4">{post.content}</p>
                 {post.image && (
                   <div className="relative aspect-video rounded-lg overflow-hidden mb-4">
-                    <Image src={post.image} alt="Confession image" layout="fill" objectFit="cover" data-ai-hint={post.imageHint} />
+                    <Image src={post.image} alt="Confession image" fill className="object-cover" data-ai-hint={post.imageHint} />
                   </div>
                 )}
                 <div className="flex items-center justify-between text-muted-foreground">

@@ -153,7 +153,7 @@ export default function ProfilePage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {staticUserProfile.videos.map((video) => (
                 <div key={video.id} className="relative aspect-[3/4] group">
-                  <Image src={video.thumbnailUrl || ''} alt="User video" layout="fill" objectFit="cover" className="rounded-lg" data-ai-hint={video.imageHint} />
+                  <Image src={video.thumbnailUrl || ''} alt="User video" fill className="rounded-lg object-cover" data-ai-hint={video.imageHint} />
                   <div className="absolute inset-0 bg-black/40 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <div className="flex items-center gap-2 text-white font-bold">
                       <Eye className="h-5 w-5" />
