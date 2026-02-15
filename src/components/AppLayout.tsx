@@ -12,6 +12,22 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isFeedPage = pathname === '/feed';
 
+  React.useEffect(() => {
+    if (window.localStorage.getItem('showWelcomeNotification') === 'true') {
+      if ('Notification' in window) {
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+            new Notification('Welcome to NoCap!', {
+              body: "You're all set up. Let's explore!",
+              icon: '/icon.png',
+            });
+          }
+        });
+      }
+      window.localStorage.removeItem('showWelcomeNotification');
+    }
+  }, []);
+
   return (
     <div className="flex min-h-screen">
       {!isMobile && <SideNav />}

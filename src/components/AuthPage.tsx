@@ -85,18 +85,7 @@ export function AuthPage() {
   }, [isLogin, form]);
 
   const handleNotificationsAndRedirect = () => {
-    // Request notification permission and show a welcome message
-    if ('Notification' in window) {
-      Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-          new Notification('Welcome to NoCap!', {
-            body: "You're all set up. Let's explore!",
-            icon: '/icon.png',
-          });
-        }
-      });
-    }
-    // Redirect immediately. The notification will appear even after navigation.
+    localStorage.setItem('showWelcomeNotification', 'true');
     router.push('/feed');
   };
   
