@@ -14,7 +14,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     if (window.localStorage.getItem('showWelcomeNotification') === 'true') {
-      if ('Notification' in window) {
+      if ('Notification' in window && Notification.permission !== 'denied') {
         Notification.requestPermission().then((permission) => {
           if (permission === 'granted') {
             new Notification('Welcome to NoCap!', {
@@ -22,9 +22,13 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               icon: '/icon.png',
             });
           }
+          // Always remove the flag after the permission prompt is handled
+          window.localStorage.removeItem('showWelcomeNotification');
         });
+      } else {
+         // If notifications aren't supported or are denied, just remove the flag
+         window.localStorage.removeItem('showWelcomeNotification');
       }
-      window.localStorage.removeItem('showWelcomeNotification');
     }
   }, []);
 
