@@ -1,3 +1,5 @@
+'use client';
+
 import { AppLayout } from '@/components/AppLayout';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
