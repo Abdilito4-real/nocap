@@ -10,24 +10,34 @@ import { AssignmentAssistantDialog } from '@/components/AssignmentAssistantDialo
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { assignments as initialAssignments } from '@/lib/data';
+import { assignments as staticAssignments } from '@/lib/data';
 import { format, differenceInDays, isToday, isPast } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Filter } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useCollection } from '@/firebase';
 
-type Assignment = typeof initialAssignments[0];
+type Assignment = typeof staticAssignments[0];
 
 export default function AssignmentsPage() {
-  const [assignments, setAssignments] = useState(initialAssignments);
+  const { data: firestoreAssignments, loading } = useCollection('assignments');
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
+  useEffect(() => {
+    if (firestoreAssignments && firestoreAssignments.length > 0) {
+      setAssignments(firestoreAssignments as Assignment[]);
+    } else if (!loading && assignments.length === 0) {
+      setAssignments(staticAssignments as Assignment[]);
+    }
+  }, [firestoreAssignments, loading]);
 
-  const handleToggleComplete = (id: number) => {
+
+  const handleToggleComplete = (id: any) => {
     setAssignments(
       assignments.map((a) => (a.id === id ? { ...a, completed: !a.completed } : a))
     );
@@ -157,7 +167,7 @@ export default function AssignmentsPage() {
         <div className="space-y-8">
           <div>
             <h2 className="text-2xl font-semibold mb-4">Upcoming</h2>
-             {!isClient ? <SkeletonGrid /> : (
+             {(!isClient || (loading && assignments.length === 0)) ? <SkeletonGrid /> : (
                 upcomingAssignments.length > 0 ? (
                   <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {upcomingAssignments.sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()).map((assignment, index) => (
