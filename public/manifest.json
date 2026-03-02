@@ -7,18 +7,71 @@
       "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/feed-desktop.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Feed"
+    },
+    {
+      "src": "/screenshots/feed-mobile.png",
+      "sizes": "375x667",
+      "type": "image/png",
+      "label": "Feed"
+    },
+    {
+      "src": "/screenshots/onboarding-desktop.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Onboarding"
+    },
+    {
+      "src": "/screenshots/onboarding-mobile.png",
+      "sizes": "375x667",
+      "type": "image/png",
+      "label": "Onboarding"
+    },
+    {
+      "src": "/screenshots/auth-desktop.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Login"
+    },
+    {
+      "src": "/screenshots/auth-mobile.png",
+      "sizes": "375x667",
+      "type": "image/png",
+      "label": "Login"
     }
   ],
   "theme_color": "#2563eb",
   "background_color": "#ffffff",
-  "start_url": "/feed",
+  "start_url": "/",
   "display": "standalone",
   "scope": "/"
 }

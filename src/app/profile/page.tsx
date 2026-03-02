@@ -11,7 +11,7 @@ import { userProfile as staticUserProfile } from '@/lib/data';
 import Image from 'next/image';
 import { Eye, Flame, Trophy } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { useUser, useDoc, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
+import { useUser, useDoc, useFirestore, useCollection, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
 import { doc, setDoc } from 'firebase/firestore';
 import { format, subDays } from 'date-fns';
@@ -20,6 +20,8 @@ export default function ProfilePage() {
   const { user, loading: userLoading } = useUser();
   const firestore = useFirestore();
   const { data: userProfile, loading: profileLoading } = useDoc(user ? `users/${user.uid}` : null);
+  const { data: userAssignments } = useCollection('assignments');
+  const { data: userJobs } = useCollection('jobs');
   const router = useRouter();
 
   useEffect(() => {
@@ -153,7 +155,7 @@ export default function ProfilePage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {staticUserProfile.videos.map((video) => (
                 <div key={video.id} className="relative aspect-[3/4] group">
-                  <Image src={video.thumbnailUrl || ''} alt="User video" layout="fill" objectFit="cover" className="rounded-lg" data-ai-hint={video.imageHint} />
+                  <Image src={video.thumbnailUrl || ''} alt="User video" fill className="rounded-lg object-cover" data-ai-hint={video.imageHint} />
                   <div className="absolute inset-0 bg-black/40 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <div className="flex items-center gap-2 text-white font-bold">
                       <Eye className="h-5 w-5" />
@@ -168,7 +170,7 @@ export default function ProfilePage() {
 
           <TabsContent value="jobs" className="mt-6">
             <div className="space-y-4">
-              {staticUserProfile.savedJobs.map((job) => (
+              {(userJobs && userJobs.length > 0 ? userJobs : staticUserProfile.savedJobs).map((job: any) => (
                 <Card key={job.id} className="bg-card">
                   <CardContent className="p-4 flex items-center justify-between">
                     <div>
@@ -179,13 +181,13 @@ export default function ProfilePage() {
                   </CardContent>
                 </Card>
               ))}
-               {staticUserProfile.savedJobs.length === 0 && <p className="text-muted-foreground">You have no saved jobs.</p>}
+               {(!userJobs || userJobs.length === 0) && staticUserProfile.savedJobs.length === 0 && <p className="text-muted-foreground">You have no saved jobs.</p>}
             </div>
           </TabsContent>
 
           <TabsContent value="assignments" className="mt-6">
              <div className="space-y-4">
-              {staticUserProfile.assignments.map((assignment) => (
+              {(userAssignments && userAssignments.length > 0 ? userAssignments : staticUserProfile.assignments).map((assignment: any) => (
                 <Card key={assignment.id} className="bg-card">
                    <CardContent className="p-4 flex items-center justify-between">
                     <div>
@@ -196,7 +198,7 @@ export default function ProfilePage() {
                   </CardContent>
                 </Card>
               ))}
-               {staticUserProfile.assignments.length === 0 && <p className="text-muted-foreground">You have no assignments listed.</p>}
+               {(!userAssignments || userAssignments.length === 0) && staticUserProfile.assignments.length === 0 && <p className="text-muted-foreground">You have no assignments listed.</p>}
             </div>
           </TabsContent>
         </Tabs>

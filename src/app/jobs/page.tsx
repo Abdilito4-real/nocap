@@ -1,12 +1,19 @@
+'use client';
+
 import { AppLayout } from '@/components/AppLayout';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search } from 'lucide-react';
-import { jobs } from '@/lib/data';
+import { Search, Loader2 } from 'lucide-react';
+import { jobs as staticJobs } from '@/lib/data';
 import { Badge } from '@/components/ui/badge';
+import { useCollection } from '@/firebase';
 
 export default function JobsPage() {
+  const { data: jobs, loading, error } = useCollection('jobs');
+
+  const displayJobs = jobs && jobs.length > 0 ? jobs : (loading ? [] : staticJobs);
+
   return (
     <AppLayout>
       <div className="p-4 md:p-8">
@@ -19,8 +26,20 @@ export default function JobsPage() {
           </div>
         </header>
 
+        {loading && jobs === null && (
+          <div className="flex justify-center items-center py-20">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        )}
+
+        {error && (
+          <div className="bg-destructive/10 text-destructive p-4 rounded-lg mb-6 text-sm">
+            Failed to load live jobs. Showing preview data.
+          </div>
+        )}
+
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {jobs.map((job) => (
+          {displayJobs.map((job: any) => (
             <Card key={job.id} className="bg-card flex flex-col">
               <CardHeader>
                 <div className="flex justify-between items-start">

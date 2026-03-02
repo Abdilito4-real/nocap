@@ -3,6 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { PwaRegistry } from '@/components/PwaRegistry';
+import { PwaInstallBanner } from '@/components/PwaInstallBanner';
 
 export const metadata: Metadata = {
   title: 'NoCap',
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body className="font-body antialiased">
         <FirebaseClientProvider>
           <PwaRegistry />
+          <PwaInstallBanner />
           {children}
           <Toaster />
         </FirebaseClientProvider>

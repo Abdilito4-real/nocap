@@ -16,9 +16,8 @@ export function VideoPost({ post }: VideoPostProps) {
           <Image
             src={post.videoUrl}
             alt={post.caption}
-            layout="fill"
-            objectFit="cover"
-            className="opacity-80"
+            fill
+            className="opacity-80 object-cover"
             data-ai-hint={post.videoHint}
           />
         )}

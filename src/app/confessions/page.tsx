@@ -1,12 +1,19 @@
+'use client';
+
 import { AppLayout } from '@/components/AppLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { confessions } from '@/lib/data';
+import { confessions as staticConfessions } from '@/lib/data';
 import Image from 'next/image';
-import { ArrowUp, ArrowDown, MessageCircle, Send } from 'lucide-react';
+import { ArrowUp, ArrowDown, MessageCircle, Send, Loader2 } from 'lucide-react';
+import { useCollection } from '@/firebase';
 
 export default function ConfessionsPage() {
+  const { data: confessions, loading, error } = useCollection('confessions');
+
+  const displayConfessions = confessions && confessions.length > 0 ? confessions : (loading ? [] : staticConfessions);
+
   return (
     <AppLayout>
       <div className="p-4 md:p-8 max-w-2xl mx-auto">
@@ -29,14 +36,26 @@ export default function ConfessionsPage() {
           </CardContent>
         </Card>
 
+        {loading && confessions === null && (
+          <div className="flex justify-center py-10">
+            <Loader2 className="h-8 w-8 animate-spin text-accent" />
+          </div>
+        )}
+
+        {error && (
+          <div className="text-center text-sm text-destructive mb-4">
+            Failed to load live confessions. Showing preview.
+          </div>
+        )}
+
         <div className="space-y-6">
-          {confessions.map((post) => (
+          {displayConfessions.map((post: any) => (
             <Card key={post.id} className="bg-card overflow-hidden">
               <CardContent className="p-6">
                 <p className="text-foreground mb-4">{post.content}</p>
                 {post.image && (
                   <div className="relative aspect-video rounded-lg overflow-hidden mb-4">
-                    <Image src={post.image} alt="Confession image" layout="fill" objectFit="cover" data-ai-hint={post.imageHint} />
+                    <Image src={post.image} alt="Confession image" fill className="object-cover" data-ai-hint={post.imageHint} />
                   </div>
                 )}
                 <div className="flex items-center justify-between text-muted-foreground">
